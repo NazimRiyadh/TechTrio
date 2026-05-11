@@ -1,4 +1,4 @@
-# BigBazar
+# TechTrio
 
 A modern, full-featured e-commerce platform built with Node.js, Express, and cutting-edge technologies for seamless shopping and payment processing.
 
