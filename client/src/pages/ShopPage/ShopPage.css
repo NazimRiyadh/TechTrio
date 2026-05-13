@@ -1,0 +1,12 @@
+.shop-page { padding: 40px 0 80px; }
+.shop-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 24px; }
+.shop-tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 28px; }
+.shop-filters { padding: 24px; margin-bottom: 28px; }
+.filter-group { margin-bottom: 16px; }
+.filter-group .flex { flex-wrap: wrap; }
+.filter-toggle { display: none; }
+.pagination { margin-top: 48px; }
+@media (max-width: 767px) {
+  .filter-toggle { display: inline-flex; }
+  .shop-tabs { overflow-x: auto; flex-wrap: nowrap; gap: 6px; padding-bottom: 4px; }
+}

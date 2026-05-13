@@ -1,0 +1,4 @@
+.auth-page { display: flex; align-items: center; justify-content: center; min-height: 70vh; }
+.auth-card { width: 100%; max-width: 440px; padding: 40px 36px; }
+.auth-form { display: flex; flex-direction: column; gap: 16px; }
+@media (max-width: 480px) { .auth-card { padding: 28px 20px; margin: 0 16px; } }

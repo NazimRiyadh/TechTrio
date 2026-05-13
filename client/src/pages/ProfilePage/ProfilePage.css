@@ -1,0 +1,16 @@
+.profile-layout { display: grid; grid-template-columns: 260px 1fr; gap: 32px; }
+.profile-sidebar { display: flex; flex-direction: column; gap: 8px; }
+.profile-avatar { width: 80px; height: 80px; border-radius: var(--rounded-xl); object-fit: cover; margin: 0 auto; }
+.profile-avatar-placeholder {
+  width: 80px; height: 80px; margin: 0 auto; border-radius: var(--rounded-xl);
+  background: var(--color-primary-soft); color: var(--color-primary);
+  display: flex; align-items: center; justify-content: center;
+}
+.profile-tab {
+  display: flex; align-items: center; gap: 10px; padding: 10px 16px; width: 100%;
+  background: none; color: var(--color-ink); font-size: 14.4px; font-weight: 500;
+  border-radius: var(--rounded-md); transition: background 0.15s; text-align: left;
+}
+.profile-tab:hover { background: var(--color-cloud); }
+.profile-tab.tab-active { background: var(--color-ink); color: #fff; }
+@media (max-width: 767px) { .profile-layout { grid-template-columns: 1fr; } }

@@ -1,0 +1,8 @@
+.checkout-steps { border-bottom: 1px solid var(--color-hairline); padding-bottom: 16px; }
+.checkout-step { display: flex; align-items: center; gap: 8px; font-size: 14.4px; font-weight: 500; color: var(--color-graphite); }
+.checkout-step-active { color: var(--color-ink); }
+.checkout-step-num {
+  width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  background: var(--color-fog); font-size: 12px; font-weight: 700;
+}
+.checkout-step-active .checkout-step-num { background: var(--color-primary); color: #fff; }

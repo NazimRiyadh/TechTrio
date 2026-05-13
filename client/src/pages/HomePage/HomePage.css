@@ -1,0 +1,318 @@
+/* Hero Slider */
+.hero-slider-section {
+  position: relative;
+  height: 85vh;
+  min-height: 600px;
+  overflow: hidden;
+  background: var(--color-ink);
+}
+
+.hero-slide {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+}
+
+.hero-slide-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.hero-slide-bg img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.hero-overlay {
+  display: none;
+}
+
+.hero-slide.light .hero-overlay {
+  display: none;
+}
+
+.hero-slide-content {
+  position: relative;
+  z-index: 2;
+  max-width: 700px;
+  color: #ffffff !important;
+  padding: 0;
+  margin-left: 5%;
+}
+
+.hero-slide.light .hero-slide-content {
+  color: var(--color-ink) !important;
+}
+
+.hero-slide-content h1,
+.hero-slide-content .display-xxl {
+  color: inherit !important;
+  margin: 16px 0;
+  line-height: 1.1;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+}
+
+.hero-slide.light .hero-slide-content .display-xxl {
+  text-shadow: none;
+}
+
+.hero-slide-content p,
+.hero-slide-content .body-lg {
+  color: inherit !important;
+  margin-bottom: 32px;
+  opacity: 0.9;
+}
+
+.hero-actions {
+  display: flex;
+  gap: var(--spacing-md);
+  flex-wrap: wrap;
+}
+
+/* Asus Style Slider Navigation */
+.asus-slider-nav {
+  position: absolute;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+}
+
+
+.nav-pill {
+  background: rgba(10, 10, 10, 0.3);
+  backdrop-filter: blur(24px);
+  border: 0.5px solid rgba(255, 255, 255, 0.15);
+  border-radius: 100px;
+  padding: 6px 14px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+}
+
+.nav-pill:hover {
+  background: rgba(10, 10, 10, 0.5);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.play-pause {
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 10px;
+  opacity: 0.9;
+  cursor: pointer;
+  width: 16px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.2s ease;
+}
+
+.play-pause:hover {
+  opacity: 1;
+}
+
+.pause-icon {
+  width: 10px;
+  height: 10px;
+  border-left: 2px solid white;
+  border-right: 2px solid white;
+}
+
+.nav-item-wrap {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 12px;
+  height: 16px;
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.nav-dots-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.progress-bar-wrap {
+  width: 50px;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 1px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: white;
+}
+
+.nav-dot-simple {
+  width: 4px;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.4);
+  border-radius: 50%;
+  transition: background 0.3s ease;
+}
+
+.nav-dot-simple:hover {
+  background: white;
+  transform: scale(1.2);
+}
+
+/* Theme Awareness */
+.asus-slider-nav.light .nav-pill {
+  background: rgba(255, 255, 255, 0.85);
+  border-color: rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.asus-slider-nav.light .play-pause,
+.asus-slider-nav.light .nav-dot-simple,
+.asus-slider-nav.light .progress-fill {
+  background: #000;
+}
+
+.asus-slider-nav.light .pause-icon {
+  border-color: #000;
+}
+
+.asus-slider-nav.light .progress-bar-wrap {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+/* Categories Grid */
+.grid-categories {
+  display: grid; grid-template-columns: repeat(6, 1fr); gap: var(--spacing-xl);
+}
+
+/* Promo Strip */
+.promo-strip-section { padding: 64px 0; }
+
+/* Drone Showcase Premium */
+.drone-showcase-premium {
+  background: var(--color-ink);
+  position: relative;
+  overflow: hidden;
+  content-visibility: auto;
+  contain-intrinsic-size: 600px;
+}
+
+/* Subtle Grain Overlay */
+.drone-showcase-premium::before {
+  content: ""; position: absolute; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='1' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  opacity: 0.04; pointer-events: none; mix-blend-mode: overlay;
+}
+
+.bento-grid-container {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(2, 280px); /* Compact height */
+  gap: var(--spacing-md);
+  grid-template-areas:
+    "main main lens remote"
+    "main main case detail";
+}
+
+.bento-item {
+  position: relative;
+  border-radius: var(--rounded-lg);
+  overflow: hidden;
+  background: var(--color-charcoal);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease;
+  will-change: transform;
+  transform: translateZ(0);
+}
+
+.bento-item:hover {
+  transform: translateY(-4px);
+  border-color: rgba(255, 255, 255, 0.2);
+  z-index: 10;
+}
+
+.bento-item img {
+  width: 100%; height: 100%; object-fit: cover;
+  transition: transform 0.8s ease;
+}
+
+.bento-item:hover img { transform: scale(1.05); }
+
+.bento-main { grid-area: main; }
+.bento-lens { grid-area: lens; }
+.bento-remote { grid-area: remote; }
+.bento-case { grid-area: case; }
+.bento-detail { grid-area: detail; }
+
+.bento-content {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  padding: 32px;
+  background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 100%);
+  color: var(--color-cream);
+}
+
+.bento-content.compact { padding: 16px 20px; }
+
+.bento-tag {
+  display: inline-block;
+  padding: 4px 10px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(8px);
+  border-radius: 100px;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.bento-content h3 { margin-bottom: 8px; }
+.bento-content p { opacity: 0.7; line-height: 1.4; }
+
+@media (max-width: 1023px) {
+  .bento-grid-container {
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: auto;
+    grid-template-areas:
+      "main main"
+      "main main"
+      "lens remote"
+      "case detail";
+  }
+  .bento-item { height: 300px; }
+}
+
+@media (max-width: 767px) {
+  .bento-grid-container {
+    grid-template-columns: 1fr;
+    grid-template-areas: none;
+  }
+  .bento-main, .bento-lens, .bento-remote, .bento-case, .bento-detail {
+    grid-area: auto;
+    height: 350px;
+  }
+}
+@media (max-width: 767px) {
+  .hero-section { padding: 32px 0; }
+  .hero-card { padding: 24px; }
+  .hero-image-wrap { min-height: 200px; }
+  .grid-categories { grid-template-columns: repeat(2, 1fr); }
+  .bento-grid-container {
+    grid-template-columns: 1fr;
+    grid-template-areas: none;
+  }
+  .bento-main, .bento-lens, .bento-remote, .bento-case, .bento-detail {
+    grid-area: auto;
+    height: 350px;
+  }
+}
