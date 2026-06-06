@@ -7,7 +7,7 @@ const API_URL = import.meta.env.VITE_API_URL || "http://localhost:4000";
 const Chatbot = () => {
   const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState([
-    { role: "assistant", content: "Hi! I'm the BigBazar Shopping Assistant. How can I help you find the perfect product?" },
+    { role: "assistant", content: "Hi! I'm the TechTrio Shopping Assistant. How can I help you find the perfect product?" },
   ]);
   const [input, setInput] = useState("");
   const [streaming, setStreaming] = useState(false);
@@ -77,7 +77,7 @@ const Chatbot = () => {
       {open && (
         <div className="chatbot-panel card">
           <div className="chatbot-header flex-between">
-            <span className="body-emphasis" style={{ color: "#fff" }}>🛍️ BigBazar AI</span>
+            <span className="body-emphasis" style={{ color: "#fff" }}>🛍️ TechTrio AI</span>
             <button className="chatbot-close" onClick={() => setOpen(false)}><FiX size={18} /></button>
           </div>
           <div className="chatbot-messages" ref={listRef}>

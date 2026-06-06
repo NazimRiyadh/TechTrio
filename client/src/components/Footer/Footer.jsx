@@ -58,12 +58,12 @@ const Footer = () => {
                 <a href="mailto:nazimriyadh001@gmail.com" aria-label="Email"><FiMail size={18} /></a>
               </div>
               <p className="body-sm" style={{ opacity: 0.5, marginTop: 16 }}>
-                BigBazar — Premium Electronics
+                TechTrio — Premium Electronics
               </p>
             </div>
           </div>
           <div className="footer-bottom caption-sm">
-            <span>© {new Date().getFullYear()} BigBazar. All rights reserved.</span>
+            <span>© {new Date().getFullYear()} TechTrio. All rights reserved.</span>
             <div className="flex gap-md">
               <Link to="/shop">Shop</Link>
               <Link to="/login">Sign In</Link>

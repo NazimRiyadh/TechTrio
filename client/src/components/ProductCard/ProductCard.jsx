@@ -33,11 +33,13 @@ const ProductCard = ({ product }) => {
         <div className="product-card-footer flex-between">
           <span className="price-md">৳{Number(product.price).toLocaleString("en-BD")}</span>
           <button
-            className="btn btn-primary btn-sm"
+            className="btn btn-primary btn-sm product-card-btn"
             disabled={product.stock === 0}
             onClick={() => { addItem(product); showToast("Added to cart!"); }}
           >
-            <FiShoppingCart size={14} /> Add
+            <FiShoppingCart size={14} />
+            <span className="add-text-desktop">Add</span>
+            <span className="add-text-mobile">Add to Cart</span>
           </button>
         </div>
       </div>

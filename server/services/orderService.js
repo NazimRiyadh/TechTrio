@@ -139,7 +139,7 @@ export const updateOrderStatus = async (orderId, status) => {
   if (templateFn) {
     sendEmail({
       email: order.email,
-      subject: `BigBazar — Order ${status}`,
+      subject: `TechTrio — Order ${status}`,
       html: templateFn(order.name, orderId),
     }).catch((err) => console.error(`Failed to send ${status} email:`, err));
   }

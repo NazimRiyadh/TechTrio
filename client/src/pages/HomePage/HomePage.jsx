@@ -130,14 +130,7 @@ const HomePage = () => {
               <div className="hero-overlay" />
             </div>
 
-            <div className="hero-slide-content">
-              <h1 className="display-xxl">{slides[currentSlide].title}</h1>
-              <div className="hero-actions">
-                <Link to={slides[currentSlide].link} className="btn btn-primary btn-lg">
-                  Shop Now <FiArrowRight style={{ marginLeft: 8 }} />
-                </Link>
-              </div>
-            </div>
+
           </motion.div>
         </AnimatePresence>
 

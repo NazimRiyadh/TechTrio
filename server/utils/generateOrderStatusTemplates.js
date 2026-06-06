@@ -28,10 +28,10 @@ const baseTemplate = (title, subtitle, content, color, orderId, buttonText) => `
           <div class="order-id">${orderId}</div>
           <br>
           <a href="${process.env.FRONTEND_URL}/orders" class="button">${buttonText}</a>
-          <p>Thank you for choosing BigBazar!</p>
+          <p>Thank you for choosing TechTrio!</p>
         </div>
         <div class="footer">
-          <p>&copy; 2026 BigBazar Inc. All rights reserved.</p>
+          <p>&copy; 2026 TechTrio Inc. All rights reserved.</p>
         </div>
       </div>
     </body>

@@ -314,26 +314,11 @@
 
   /* Hero Slider Mobile Adaptations */
   .hero-slider-section {
-    height: 60vh;
-    min-height: 420px;
-  }
-  .hero-slide-content {
-    margin-left: 24px;
-    padding-right: 24px;
-    max-width: 90%;
-  }
-  .hero-slide-content h1,
-  .hero-slide-content .display-xxl {
-    font-size: 36px !important;
-    margin: 10px 0;
-  }
-  .hero-slide-content p,
-  .hero-slide-content .body-lg {
-    font-size: 14.5px !important;
-    margin-bottom: 24px;
+    height: 45vh;
+    min-height: 280px;
   }
   .asus-slider-nav {
-    bottom: 20px;
+    bottom: 15px;
   }
 }
 
@@ -343,25 +328,7 @@
     gap: var(--spacing-md);
   }
   .hero-slider-section {
-    height: 52vh;
-    min-height: 360px;
-  }
-  .hero-slide-content {
-    margin-left: 16px;
-    padding-right: 16px;
-  }
-  .hero-slide-content h1,
-  .hero-slide-content .display-xxl {
-    font-size: 28px !important;
-  }
-  .hero-slide-content p,
-  .hero-slide-content .body-lg {
-    font-size: 13px !important;
-    margin-bottom: 16px;
-  }
-  .hero-actions .btn {
-    padding: 0 16px;
-    height: 40px;
-    font-size: 13.5px;
+    height: 35vh;
+    min-height: 200px;
   }
 }

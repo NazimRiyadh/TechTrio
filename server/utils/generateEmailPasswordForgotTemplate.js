@@ -10,7 +10,7 @@ export const generateEmailPasswordForgotTemplate = (
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Reset Your Password - BigBazar</title>
+  <title>Reset Your Password - TechTrio</title>
   <style>
     body {
       margin: 0;
@@ -135,7 +135,7 @@ export const generateEmailPasswordForgotTemplate = (
     <!-- Header -->
     <div class="header">
       <div class="logo">🛍️</div>
-      <h2 style="margin:0; font-size:22px; font-weight:700;">BigBazar</h2>
+      <h2 style="margin:0; font-size:22px; font-weight:700;">TechTrio</h2>
     </div>
 
     <!-- Content -->
@@ -143,7 +143,7 @@ export const generateEmailPasswordForgotTemplate = (
       <h1>Reset Your Password</h1>
       
       <p>${greeting}</p>
-      <p>We received a request to reset the password for your BigBazar account. Click the button below to set a new password.</p>
+      <p>We received a request to reset the password for your TechTrio account. Click the button below to set a new password.</p>
       
       <a href="${resetUrl}" class="button" target="_blank" style="display:inline-block;">
         Reset Password
@@ -164,13 +164,13 @@ export const generateEmailPasswordForgotTemplate = (
 
     <!-- Footer -->
     <div class="footer">
-      <p>Thank you,<br><strong>BigBazar Team</strong></p>
+      <p>Thank you,<br><strong>TechTrio Team</strong></p>
       <p>
         If you need help, contact us at 
-        <a href="mailto:support@bigbazar.com">support@bigbazar.com</a>
+        <a href="mailto:support@techtrio.com">support@techtrio.com</a>
       </p>
       <p style="margin-top:15px; font-size:12px;">
-        © ${new Date().getFullYear()} BigBazar. All rights reserved.
+        © ${new Date().getFullYear()} TechTrio. All rights reserved.
       </p>
     </div>
   </div>

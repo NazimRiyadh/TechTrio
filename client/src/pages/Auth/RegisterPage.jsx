@@ -32,7 +32,7 @@ const RegisterPage = () => {
     <main className="auth-page section">
       <div className="auth-card card">
         <h1 className="display-md text-center">Create Account</h1>
-        <p className="body-md text-graphite text-center" style={{ marginTop: 8, marginBottom: 28 }}>Join BigBazar today</p>
+        <p className="body-md text-graphite text-center" style={{ marginTop: 8, marginBottom: 28 }}>Join TechTrio today</p>
         <form onSubmit={handleSubmit} className="auth-form">
           <div>
             <label className="input-label">Full Name</label>

@@ -30,7 +30,7 @@ const LoginPage = () => {
     <main className="auth-page section">
       <div className="auth-card card">
         <h1 className="display-md text-center">Sign In</h1>
-        <p className="body-md text-graphite text-center" style={{ marginTop: 8, marginBottom: 28 }}>Welcome back to BigBazar</p>
+        <p className="body-md text-graphite text-center" style={{ marginTop: 8, marginBottom: 28 }}>Welcome back to TechTrio</p>
         <form onSubmit={handleSubmit} className="auth-form">
           <div>
             <label className="input-label">Email</label>
