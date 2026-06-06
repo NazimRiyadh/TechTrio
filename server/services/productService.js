@@ -45,7 +45,7 @@ export const fetchAllProducts = async (filters, page, limit) => {
   const safeLimit = Math.min(50, Math.max(1, limit));
   const offset = (safePage - 1) * safeLimit;
 
-  const { availability, price, category, ratings, search } = filters;
+  const { availability, price, category, ratings, search, sort } = filters;
 
   const conditions = [];
   const values = [];
@@ -85,7 +85,7 @@ export const fetchAllProducts = async (filters, page, limit) => {
   const [totalProducts, products, newProducts, topRatedProducts] =
     await Promise.all([
       productRepo.countWithFilters(conditions, values),
-      productRepo.findAllWithFilters(conditions, values, safeLimit, offset),
+      productRepo.findAllWithFilters(conditions, values, safeLimit, offset, sort),
       productRepo.findNewProducts(),
       productRepo.findTopRated(),
     ]);

@@ -37,14 +37,32 @@ const ShopPage = () => {
   const [products, setProducts] = useState([]);
   const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(true);
-  const [filtersOpen, setFiltersOpen] = useState(false);
 
   const currentCat = searchParams.get("category") || "All";
   const currentSearch = searchParams.get("search") || "";
   const currentPage = parseInt(searchParams.get("page")) || 1;
   const currentPrice = searchParams.get("price") || "";
   const currentAvail = searchParams.get("availability") || "";
+  const currentSort = searchParams.get("sort") || "newest";
   const limit = 12;
+
+  // Temporary local states for filters before hitting Apply
+  const [tempCat, setTempCat] = useState(currentCat);
+  const [tempPrice, setTempPrice] = useState(currentPrice);
+  const [tempAvail, setTempAvail] = useState(currentAvail);
+
+  // Sync temp states if search params change externally (like clicking category from home, or clearing)
+  useEffect(() => {
+    setTempCat(currentCat);
+  }, [currentCat]);
+
+  useEffect(() => {
+    setTempPrice(currentPrice);
+  }, [currentPrice]);
+
+  useEffect(() => {
+    setTempAvail(currentAvail);
+  }, [currentAvail]);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -55,6 +73,7 @@ const ShopPage = () => {
         if (currentSearch) params.set("search", currentSearch);
         if (currentPrice) params.set("price", currentPrice);
         if (currentAvail) params.set("availability", currentAvail);
+        if (currentSort && currentSort !== "newest") params.set("sort", currentSort);
         params.set("page", currentPage);
         params.set("limit", limit);
         
@@ -70,7 +89,7 @@ const ShopPage = () => {
       }
     };
     fetchProducts();
-  }, [currentCat, currentSearch, currentPage, currentPrice, currentAvail]);
+  }, [currentCat, currentSearch, currentPage, currentPrice, currentAvail, currentSort]);
 
   const setParam = (key, val) => {
     const p = new URLSearchParams(searchParams);
@@ -84,8 +103,47 @@ const ShopPage = () => {
     setSearchParams(p);
   };
 
+  const applyFilters = () => {
+    const p = new URLSearchParams(searchParams);
+    
+    if (tempCat && tempCat !== "All") {
+      p.set("category", tempCat);
+    } else {
+      p.delete("category");
+    }
+
+    if (tempPrice) {
+      p.set("price", tempPrice);
+    } else {
+      p.delete("price");
+    }
+
+    if (tempAvail) {
+      p.set("availability", tempAvail);
+    } else {
+      p.delete("availability");
+    }
+
+    p.delete("page"); // Reset to page 1 on new filter apply
+    setSearchParams(p);
+  };
+
+  const handleSortChange = (newSort) => {
+    const p = new URLSearchParams(searchParams);
+    if (newSort && newSort !== "newest") {
+      p.set("sort", newSort);
+    } else {
+      p.delete("sort");
+    }
+    p.delete("page"); // Reset to page 1
+    setSearchParams(p);
+  };
+
   const clearAllFilters = () => {
     setSearchParams(new URLSearchParams());
+    setTempCat("All");
+    setTempPrice("");
+    setTempAvail("");
   };
 
   const totalPages = Math.ceil(total / limit);
@@ -125,73 +183,98 @@ const ShopPage = () => {
               {total} product{total !== 1 ? "s" : ""} found
             </p>
           </div>
-          <button className="filter-toggle-btn" onClick={() => setFiltersOpen(!filtersOpen)}>
-            <FiFilter size={16} /> Filters
-          </button>
         </div>
 
-        {/* Shop Main Layout */}
-        <div className="shop-layout">
-          {/* Sidebar Filters */}
-          <aside className={`shop-sidebar ${filtersOpen ? "sidebar-open" : ""}`}>
-            <div className="sidebar-header flex-between">
-              <span className="body-emphasis">Filters</span>
-              <button className="nav-icon-btn" onClick={() => setFiltersOpen(false)}>
-                <FiX size={20} />
-              </button>
-            </div>
-
-            {/* Categories */}
-            <div className="filter-group">
-              <h4 className="filter-title">Categories</h4>
-              <div className="filter-list">
+        {/* Premium Horizontal Filter Bar */}
+        <div className="filter-bar">
+          <div className="filter-bar-left">
+            {/* Category Dropdown */}
+            <div className="filter-dropdown-container">
+              <label className="filter-label">Category</label>
+              <select
+                value={tempCat}
+                onChange={(e) => setTempCat(e.target.value)}
+                className="filter-select"
+              >
                 {categories.map((cat) => (
-                  <button key={cat} className={`filter-btn ${currentCat === cat ? "active" : ""}`} onClick={() => setParam("category", cat)}>
+                  <option key={cat} value={cat}>
                     {cat}
-                  </button>
+                  </option>
                 ))}
-              </div>
+              </select>
             </div>
 
-            {/* Price Ranges */}
-            <div className="filter-group">
-              <h4 className="filter-title">Price Range</h4>
-              <div className="filter-list">
+            {/* Price Range Dropdown */}
+            <div className="filter-dropdown-container">
+              <label className="filter-label">Price Range</label>
+              <select
+                value={tempPrice}
+                onChange={(e) => setTempPrice(e.target.value)}
+                className="filter-select"
+              >
                 {priceRanges.map((range) => (
-                  <button key={range.label} className={`filter-btn ${currentPrice === range.value ? "active" : ""}`} onClick={() => setParam("price", range.value)}>
+                  <option key={range.label} value={range.value}>
                     {range.label}
-                  </button>
+                  </option>
                 ))}
-              </div>
+              </select>
             </div>
 
-            {/* Availability */}
-            <div className="filter-group">
-              <h4 className="filter-title">Stock Status</h4>
-              <div className="filter-list">
+            {/* Stock Status Dropdown */}
+            <div className="filter-dropdown-container">
+              <label className="filter-label">Stock Status</label>
+              <select
+                value={tempAvail}
+                onChange={(e) => setTempAvail(e.target.value)}
+                className="filter-select"
+              >
                 {availabilities.map((avail) => (
-                  <button key={avail.value} className={`filter-btn ${currentAvail === avail.value ? "active" : ""}`} onClick={() => setParam("availability", avail.value)}>
+                  <option key={avail.label} value={avail.value}>
                     {avail.label}
-                  </button>
+                  </option>
                 ))}
-              </div>
+              </select>
             </div>
 
-            {/* Clear Filters */}
-            {(currentCat !== "All" || currentPrice || currentAvail || currentSearch) && (
-              <button className="clear-all-btn" onClick={clearAllFilters}>
-                Clear All Filters
+            {/* Apply & Clear Actions */}
+            <div className="filter-actions">
+              <button className="apply-filter-btn" onClick={applyFilters}>
+                Filter
               </button>
-            )}
-          </aside>
+              {(currentCat !== "All" || currentPrice || currentAvail || currentSearch) && (
+                <button className="clear-filter-btn" onClick={clearAllFilters}>
+                  Clear
+                </button>
+              )}
+            </div>
+          </div>
 
-          {/* Shop Main Content */}
+          <div className="filter-bar-right">
+            {/* Sort Dropdown */}
+            <div className="filter-dropdown-container">
+              <label className="filter-label">Sort By</label>
+              <select
+                value={currentSort}
+                onChange={(e) => handleSortChange(e.target.value)}
+                className="filter-select sort-select"
+              >
+                <option value="newest">Newest Arrivals</option>
+                <option value="price-asc">Price: Low to High</option>
+                <option value="price-desc">Price: High to Low</option>
+                <option value="ratings-desc">Top Rated</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        {/* Shop Main Layout (Now full-width product grid) */}
+        <div className="shop-layout-horizontal">
           <div className="shop-content">
             {loading ? (
               <div className="page-loader"><div className="spinner" /></div>
             ) : products.length > 0 ? (
               <>
-                <div className="grid grid-3">
+                <div className="grid grid-4">
                   {products.map((p) => (
                     <ProductCard key={p.id} product={p} />
                   ))}

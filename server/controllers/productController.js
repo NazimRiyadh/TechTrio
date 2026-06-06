@@ -30,6 +30,7 @@ export const fetchAllProducts = catchAsyncErrors(async (req, res) => {
     category: req.query.category,
     ratings: req.query.ratings,
     search: req.query.search,
+    sort: req.query.sort,
   };
 
   const data = await productService.fetchAllProducts(filters, page, limit);

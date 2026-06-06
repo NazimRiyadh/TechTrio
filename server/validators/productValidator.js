@@ -50,4 +50,5 @@ export const productQuery = z.object({
   ),
   category: z.string().optional(),
   search: z.string().optional(),
+  sort: z.enum(["price-asc", "price-desc", "newest", "ratings-desc"]).optional(),
 });

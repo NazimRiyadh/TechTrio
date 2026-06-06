@@ -53,11 +53,23 @@ export const countWithFilters = async (conditions, values) => {
   return parseInt(result.rows[0].count);
 };
 
-export const findAllWithFilters = async (conditions, values, limit, offset) => {
+export const findAllWithFilters = async (conditions, values, limit, offset, sort) => {
   const whereClause = conditions.length
     ? `WHERE ${conditions.join(" AND ")}`
     : "";
   const idx = values.length;
+  
+  let orderBy = "ORDER BY p.created_at DESC";
+  if (sort === "price-asc") {
+    orderBy = "ORDER BY p.price ASC";
+  } else if (sort === "price-desc") {
+    orderBy = "ORDER BY p.price DESC";
+  } else if (sort === "ratings-desc") {
+    orderBy = "ORDER BY p.ratings DESC, p.created_at DESC";
+  } else if (sort === "newest") {
+    orderBy = "ORDER BY p.created_at DESC";
+  }
+
   const query = `
     SELECT p.*,
            COUNT(r.id) AS review_count
@@ -65,7 +77,7 @@ export const findAllWithFilters = async (conditions, values, limit, offset) => {
     LEFT JOIN reviews r ON p.id = r.product_id
     ${whereClause}
     GROUP BY p.id
-    ORDER BY p.created_at DESC
+    ${orderBy}
     LIMIT $${idx + 1}
     OFFSET $${idx + 2}
   `;
