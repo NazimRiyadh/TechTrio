@@ -609,73 +609,130 @@ const AdminProducts = () => {
       {/* Products Table Card */}
       <section className="card admin-table-card">
         {filteredProducts.length > 0 ? (
-          <div className="table-responsive">
-            <table className="admin-table">
-              <thead>
-                <tr>
-                  <th>Thumbnail</th>
-                  <th>Product Title</th>
-                  <th>Category</th>
-                  <th>Price</th>
-                  <th>Inventory Status</th>
-                  <th className="text-center">Operations</th>
-                </tr>
-              </thead>
-              <tbody>
-                {filteredProducts.map((p) => (
-                  <tr key={p.id}>
-                    <td>
-                      <div className="table-img-wrapper">
-                        {p.images?.[0]?.url ? (
-                          <img src={p.images[0].url} alt={p.name} />
-                        ) : (
-                          <div className="table-img-fallback">
-                            <FiPackage size={16} />
-                          </div>
-                        )}
-                      </div>
-                    </td>
-                    <td className="body-emphasis product-title-col">
-                      <div className="product-title-cell">
-                        <span className="name-main truncate" title={p.name}>
-                          {p.name}
-                        </span>
-                        <span className="desc-sub truncate">
-                          {p.description}
-                        </span>
-                      </div>
-                    </td>
-                    <td>
-                      <span className="badge badge-outline">{p.category}</span>
-                    </td>
-                    <td className="body-emphasis price-col">
-                      ৳
-                      {Number(p.price).toLocaleString("en-BD")}
-                    </td>
-                    <td>{getStockBadge(p.stock)}</td>
-                    <td className="text-center">
-                      <div className="table-actions flex-center gap-sm">
-                        <button
-                          className="btn btn-outline-ink btn-sm action-icon-btn edit"
-                          onClick={() => handleStartEdit(p)}
-                          title="Edit details"
-                        >
-                          <FiEdit2 size={14} /> Edit
-                        </button>
-                        <button
-                          className="btn btn-outline-ink btn-sm action-icon-btn delete"
-                          onClick={() => deleteProduct(p.id)}
-                          title="Delete item"
-                        >
-                          <FiTrash2 size={14} /> Delete
-                        </button>
-                      </div>
-                    </td>
+          <>
+            {/* Desktop View */}
+            <div className="table-responsive admin-products-desktop">
+              <table className="admin-table">
+                <thead>
+                  <tr>
+                    <th>Thumbnail</th>
+                    <th>Product Title</th>
+                    <th>Category</th>
+                    <th>Price</th>
+                    <th>Inventory Status</th>
+                    <th className="text-center">Operations</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                </thead>
+                <tbody>
+                  {filteredProducts.map((p) => (
+                    <tr key={p.id}>
+                      <td>
+                        <div className="table-img-wrapper">
+                          {p.images?.[0]?.url ? (
+                            <img src={p.images[0].url} alt={p.name} />
+                          ) : (
+                            <div className="table-img-fallback">
+                              <FiPackage size={16} />
+                            </div>
+                          )}
+                        </div>
+                      </td>
+                      <td className="body-emphasis product-title-col">
+                        <div className="product-title-cell">
+                          <span className="name-main truncate" title={p.name}>
+                            {p.name}
+                          </span>
+                          <span className="desc-sub truncate">
+                            {p.description}
+                          </span>
+                        </div>
+                      </td>
+                      <td>
+                        <span className="badge badge-outline">{p.category}</span>
+                      </td>
+                      <td className="body-emphasis price-col">
+                        ৳
+                        {Number(p.price).toLocaleString("en-BD")}
+                      </td>
+                      <td>{getStockBadge(p.stock)}</td>
+                      <td className="text-center">
+                        <div className="table-actions flex-center gap-sm">
+                          <button
+                            className="btn btn-outline-ink btn-sm action-icon-btn edit"
+                            onClick={() => handleStartEdit(p)}
+                            title="Edit details"
+                          >
+                            <FiEdit2 size={14} /> Edit
+                          </button>
+                          <button
+                            className="btn btn-outline-ink btn-sm action-icon-btn delete"
+                            onClick={() => deleteProduct(p.id)}
+                            title="Delete item"
+                          >
+                            <FiTrash2 size={14} /> Delete
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            {/* Mobile View */}
+            <div className="admin-products-mobile" style={{ padding: "8px 16px" }}>
+              {filteredProducts.map((p) => (
+                <div key={p.id} className="mobile-product-card card" style={{ padding: 16, marginBottom: 16, border: "1px solid var(--color-hairline)" }}>
+                  <div style={{ display: "flex", gap: 12, alignItems: "center", marginBottom: 12 }}>
+                    <div className="table-img-wrapper" style={{ width: 60, height: 60, flexShrink: 0 }}>
+                      {p.images?.[0]?.url ? (
+                        <img src={p.images[0].url} alt={p.name} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                      ) : (
+                        <div className="table-img-fallback">
+                          <FiPackage size={20} />
+                        </div>
+                      )}
+                    </div>
+                    <div style={{ minWidth: 0, flex: 1 }}>
+                      <span style={{ fontWeight: 700, fontSize: "14px", display: "block", color: "var(--color-ink)" }} className="truncate">{p.name}</span>
+                      <span style={{ fontSize: "12px", color: "var(--color-graphite)", display: "block" }} className="truncate">{p.description}</span>
+                      <span className="badge badge-outline" style={{ marginTop: 4, display: "inline-block", fontSize: "11px" }}>{p.category}</span>
+                    </div>
+                  </div>
+
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
+                    <div>
+                      <span style={{ fontSize: "12px", color: "var(--color-graphite)", display: "block" }}>Price</span>
+                      <span style={{ fontWeight: 800, fontSize: "15px", color: "var(--color-primary)" }}>
+                        ৳{Number(p.price).toLocaleString("en-BD")}
+                      </span>
+                    </div>
+                    <div>
+                      <span style={{ fontSize: "12px", color: "var(--color-graphite)", display: "block", textAlign: "right" }}>Stock Status</span>
+                      {getStockBadge(p.stock)}
+                    </div>
+                  </div>
+
+                  <div style={{ display: "flex", justifyContent: "flex-end", gap: 8, borderTop: "1px solid var(--color-hairline)", paddingTop: 12 }}>
+                    <button
+                      className="btn btn-outline-ink btn-sm action-icon-btn edit"
+                      onClick={() => handleStartEdit(p)}
+                      style={{ padding: "6px 12px", fontSize: "12px" }}
+                    >
+                      <FiEdit2 size={12} /> Edit
+                    </button>
+                    <button
+                      className="btn btn-outline-ink btn-sm action-icon-btn delete"
+                      onClick={() => deleteProduct(p.id)}
+                      style={{ padding: "6px 12px", fontSize: "12px" }}
+                    >
+                      <FiTrash2 size={12} /> Delete
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </>
         ) : (
           <div className="table-empty-state">
             <FiPackage size={48} className="empty-icon" />

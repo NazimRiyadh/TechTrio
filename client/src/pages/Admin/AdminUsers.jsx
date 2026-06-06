@@ -159,7 +159,8 @@ const AdminUsers = () => {
           </div>
         ) : filteredUsers.length > 0 ? (
           <>
-            <div className="table-responsive">
+            {/* Desktop View */}
+            <div className="table-responsive admin-users-desktop">
               <table className="admin-table">
                 <thead>
                   <tr>
@@ -230,6 +231,74 @@ const AdminUsers = () => {
                   })}
                 </tbody>
               </table>
+            </div>
+
+            {/* Mobile View */}
+            <div className="admin-users-mobile" style={{ padding: "8px 16px" }}>
+              {filteredUsers.map((u) => {
+                const isSelf = u.id === currentUser?.id;
+                const formattedDate = new Date(u.created_at).toLocaleDateString(undefined, {
+                  year: "numeric",
+                  month: "short",
+                  day: "numeric"
+                });
+
+                // Parse avatar url if it exists as object or string
+                let avatarUrl = "";
+                if (u.avatar) {
+                  avatarUrl = typeof u.avatar === "string" ? u.avatar : u.avatar.url;
+                }
+
+                return (
+                  <div key={u.id} className={`mobile-user-card card ${isSelf ? "user-row-self" : ""}`} style={{ padding: 16, marginBottom: 16, border: "1px solid var(--color-hairline)" }}>
+                    <div style={{ display: "flex", gap: 12, alignItems: "center", marginBottom: 12 }}>
+                      <div className="table-avatar-wrapper" style={{ width: 48, height: 48, flexShrink: 0 }}>
+                        {avatarUrl ? (
+                          <img src={avatarUrl} alt={u.name} className="user-avatar" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                        ) : (
+                          <div className="user-avatar-fallback flex-center" title={u.name} style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                            {getInitials(u.name)}
+                          </div>
+                        )}
+                      </div>
+                      <div style={{ minWidth: 0, flex: 1 }}>
+                        <div className="user-name-cell" style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                          <span className="user-name-text" style={{ fontWeight: 700, fontSize: "14px", color: "var(--color-ink)" }}>{u.name}</span>
+                          {isSelf && <span className="self-label-pill" style={{ fontSize: "9px" }}>You</span>}
+                        </div>
+                        <span style={{ fontSize: "12.5px", color: "var(--color-graphite)", display: "block" }} className="truncate">{u.email}</span>
+                      </div>
+                    </div>
+
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
+                      <div>
+                        <span style={{ fontSize: "11px", color: "var(--color-graphite)", display: "block" }}>Joined</span>
+                        <span className="caption-md text-graphite" style={{ fontSize: "13px" }}>{formattedDate}</span>
+                      </div>
+                      <div>
+                        <span style={{ fontSize: "11px", color: "var(--color-graphite)", display: "block", textAlign: "right" }}>Security Level</span>
+                        {getRoleBadge(u.role)}
+                      </div>
+                    </div>
+
+                    <div style={{ display: "flex", justifyContent: "flex-end", gap: 8, borderTop: "1px solid var(--color-hairline)", paddingTop: 12, alignItems: "center", minHeight: "36px" }}>
+                      {isSelf ? (
+                        <span className="action-note-text caption-sm text-graphite" style={{ fontStyle: "italic", fontSize: "12px" }}>Protected Account</span>
+                      ) : u.role === "admin" ? (
+                        <span className="action-note-text caption-sm text-graphite" style={{ fontStyle: "italic", fontSize: "12px" }}>Admin Account</span>
+                      ) : (
+                        <button
+                          className="btn btn-outline-ink btn-sm action-icon-btn delete"
+                          onClick={() => deleteUser(u.id)}
+                          style={{ padding: "6px 12px", fontSize: "12px" }}
+                        >
+                          <FiTrash2 size={12} /> Remove Account
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                );
+              })}
             </div>
 
             {/* Pagination Control Bar */}

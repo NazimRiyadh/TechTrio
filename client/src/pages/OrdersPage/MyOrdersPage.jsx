@@ -52,85 +52,34 @@ const MyOrdersPage = () => {
 
                 {/* Stepper Status Timeline */}
                 {order.order_status !== "Cancelled" ? (
-                  <div className="order-stepper" style={{ display: "flex", alignItems: "center", justifyContent: "space-between", margin: "10px 0 20px", position: "relative", padding: "0 10px", width: "100%" }}>
+                  <div className="order-stepper">
                     {/* Background Progress Line */}
-                    <div style={{
-                      position: "absolute",
-                      left: "35px",
-                      right: "35px",
-                      top: "11px",
-                      height: "3px",
-                      background: "var(--color-hairline)",
-                      zIndex: 1
-                    }} />
+                    <div className="stepper-line-bg" />
                     {/* Active Progress Line */}
-                    <div style={{
-                      position: "absolute",
-                      left: "35px",
-                      right: "35px",
-                      top: "11px",
-                      height: "3px",
-                      background: "var(--color-primary)",
-                      width: order.order_status === "Delivered" ? "100%" : order.order_status === "Shipped" ? "50%" : "0%",
-                      transition: "width 0.5s ease",
-                      zIndex: 2
+                    <div className="stepper-line-active" style={{
+                      width: order.order_status === "Delivered" ? "100%" : order.order_status === "Shipped" ? "50%" : "0%"
                     }} />
 
                     {/* Step 1: Processing */}
-                    <div className="step-node" style={{ display: "flex", flexDirection: "column", alignItems: "center", zIndex: 3, flex: 1 }}>
-                      <div style={{
-                        width: "24px",
-                        height: "24px",
-                        borderRadius: "50%",
-                        background: "var(--color-primary)",
-                        color: "white",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        fontSize: "10px",
-                        fontWeight: 700,
-                        border: "3px solid var(--color-canvas)",
-                        boxShadow: "0 2px 5px rgba(2, 74, 216, 0.2)"
-                      }}>✓</div>
-                      <span className="caption-sm" style={{ fontWeight: 600, marginTop: 4, color: "var(--color-ink)", fontSize: "11.5px" }}>Processing</span>
+                    <div className="step-node">
+                      <div className="step-circle active">✓</div>
+                      <span className="step-label active">Processing</span>
                     </div>
 
                     {/* Step 2: Shipped */}
-                    <div className="step-node" style={{ display: "flex", flexDirection: "column", alignItems: "center", zIndex: 3, flex: 1 }}>
-                      <div style={{
-                        width: "24px",
-                        height: "24px",
-                        borderRadius: "50%",
-                        background: (order.order_status === "Shipped" || order.order_status === "Delivered") ? "var(--color-primary)" : "var(--color-steel)",
-                        color: "white",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        fontSize: "10px",
-                        fontWeight: 700,
-                        border: "3px solid var(--color-canvas)",
-                        boxShadow: (order.order_status === "Shipped" || order.order_status === "Delivered") ? "0 2px 5px rgba(2, 74, 216, 0.2)" : "none"
-                      }}>{(order.order_status === "Shipped" || order.order_status === "Delivered") ? "✓" : "2"}</div>
-                      <span className="caption-sm" style={{ fontWeight: 600, marginTop: 4, color: (order.order_status === "Shipped" || order.order_status === "Delivered") ? "var(--color-ink)" : "var(--color-graphite)", fontSize: "11.5px" }}>Shipped</span>
+                    <div className="step-node">
+                      <div className={`step-circle ${(order.order_status === "Shipped" || order.order_status === "Delivered") ? "active" : ""}`}>
+                        {(order.order_status === "Shipped" || order.order_status === "Delivered") ? "✓" : "2"}
+                      </div>
+                      <span className={`step-label ${(order.order_status === "Shipped" || order.order_status === "Delivered") ? "active" : ""}`}>Shipped</span>
                     </div>
 
                     {/* Step 3: Delivered */}
-                    <div className="step-node" style={{ display: "flex", flexDirection: "column", alignItems: "center", zIndex: 3, flex: 1 }}>
-                      <div style={{
-                        width: "24px",
-                        height: "24px",
-                        borderRadius: "50%",
-                        background: order.order_status === "Delivered" ? "var(--color-primary)" : "var(--color-steel)",
-                        color: "white",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        fontSize: "10px",
-                        fontWeight: 700,
-                        border: "3px solid var(--color-canvas)",
-                        boxShadow: order.order_status === "Delivered" ? "0 2px 5px rgba(2, 74, 216, 0.2)" : "none"
-                      }}>{order.order_status === "Delivered" ? "✓" : "3"}</div>
-                      <span className="caption-sm" style={{ fontWeight: 600, marginTop: 4, color: order.order_status === "Delivered" ? "var(--color-ink)" : "var(--color-graphite)", fontSize: "11.5px" }}>Delivered</span>
+                    <div className="step-node">
+                      <div className={`step-circle ${order.order_status === "Delivered" ? "active" : ""}`}>
+                        {order.order_status === "Delivered" ? "✓" : "3"}
+                      </div>
+                      <span className={`step-label ${order.order_status === "Delivered" ? "active" : ""}`}>Delivered</span>
                     </div>
                   </div>
                 ) : (

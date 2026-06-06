@@ -1226,6 +1226,13 @@
   letter-spacing: 0.5px;
 }
 
+/* ---------- Mobile Responsive View Toggles ---------- */
+.admin-orders-mobile,
+.admin-products-mobile,
+.admin-users-mobile {
+  display: none;
+}
+
 /* ---------- Responsive ---------- */
 @media (max-width: 1280px) {
   .kpi-grid {
@@ -1237,6 +1244,17 @@
 }
 
 @media (max-width: 768px) {
+  .admin-orders-desktop,
+  .admin-products-desktop,
+  .admin-users-desktop {
+    display: none !important;
+  }
+  .admin-orders-mobile,
+  .admin-products-mobile,
+  .admin-users-mobile {
+    display: block !important;
+  }
+
   .kpi-grid {
     grid-template-columns: 1fr;
   }

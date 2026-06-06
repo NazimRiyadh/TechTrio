@@ -301,10 +301,19 @@ input, select, textarea { font-family: inherit; }
   .display-lg { font-size: 32px; }
 }
 @media (max-width: 767px) {
-  .grid-4, .grid-3, .grid-2 { grid-template-columns: 1fr; }
+  .grid-4, .grid-3 { grid-template-columns: repeat(2, 1fr); gap: 16px; }
+  .grid-2 { grid-template-columns: 1fr; }
   .container { padding: 0 16px; }
-  .display-xxl { font-size: 38px; line-height: 1.1; }
-  .display-xl { font-size: 32px; line-height: 1.1; }
-  .display-lg { font-size: 28px; }
-  .display-md { font-size: 24px; }
+  .display-xxl { font-size: 34px; line-height: 1.1; }
+  .display-xl { font-size: 28px; line-height: 1.1; }
+  .display-lg { font-size: 24px; }
+  .display-md { font-size: 20px; }
+}
+@media (max-width: 480px) {
+  .grid-4, .grid-3 { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+  .container { padding: 0 12px; }
+  .display-xxl { font-size: 28px; }
+  .display-xl { font-size: 24px; }
+  .display-lg { font-size: 20px; }
+  .display-md { font-size: 18px; }
 }
