@@ -20,17 +20,25 @@ dotenv.config({ path: join(__dirname, "..", "config", "config.env") });
 
 const { Pool } = pg;
 
-const pool = new Pool({
-  user: process.env.DB_USER,
-  host: process.env.DB_HOST,
-  database: process.env.DB_NAME,
-  password: String(process.env.DB_PASSWORD),
-  port: parseInt(process.env.DB_PORT),
-});
+const poolConfig = process.env.DATABASE_URL
+  ? {
+      connectionString: process.env.DATABASE_URL,
+      ssl: process.env.NODE_ENV === "production" ? { rejectUnauthorized: false } : false,
+    }
+  : {
+      user: process.env.DB_USER,
+      host: process.env.DB_HOST,
+      database: process.env.DB_NAME,
+      password: String(process.env.DB_PASSWORD),
+      port: parseInt(process.env.DB_PORT),
+      ssl: process.env.NODE_ENV === "production" ? { rejectUnauthorized: false } : false,
+    };
 
-const ADMIN_NAME = "BigBazar Admin";
-const ADMIN_EMAIL = "admin@bigbazar.com";
-const ADMIN_PASSWORD = "Admin@123";
+const pool = new Pool(poolConfig);
+
+const ADMIN_NAME = process.env.ADMIN_NAME || "TechTrio Admin";
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL || "nazimriyadh001@gmail.com";
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "Admin@123";
 
 const seedAdmin = async () => {
   try {
