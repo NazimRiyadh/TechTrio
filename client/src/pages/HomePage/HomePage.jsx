@@ -131,14 +131,10 @@ const HomePage = () => {
             </div>
 
             <div className="hero-slide-content">
-              <span className="badge badge-primary-soft" style={{ marginBottom: 8, fontSize: "11px", letterSpacing: "1px" }}>
-                {slides[currentSlide].badge}
-              </span>
               <h1 className="display-xxl">{slides[currentSlide].title}</h1>
-              <p className="body-lg">{slides[currentSlide].subtitle}</p>
               <div className="hero-actions">
                 <Link to={slides[currentSlide].link} className="btn btn-primary btn-lg">
-                  {slides[currentSlide].cta} <FiArrowRight style={{ marginLeft: 8 }} />
+                  Shop Now <FiArrowRight style={{ marginLeft: 8 }} />
                 </Link>
               </div>
             </div>
@@ -282,14 +278,7 @@ const HomePage = () => {
         </div>
       </section>
 
-      {/* Promo Strip */}
-      <section className="promo-strip-section section-ink">
-        <div className="container text-center">
-          <h2 className="display-md" style={{ marginBottom: 12 }}>Free Shipping on Orders Over $500</h2>
-          <p className="body-md" style={{ opacity: 0.7, marginBottom: 24 }}>Plus easy returns within 30 days. Shop with confidence.</p>
-          <Link to="/shop" className="btn btn-primary">Start Shopping</Link>
-        </div>
-      </section>
+
 
       {/* Top Rated */}
       <section className="section section-cloud" style={{ contentVisibility: "auto", containIntrinsicSize: "800px" }}>
