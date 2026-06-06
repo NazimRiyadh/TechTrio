@@ -1,7 +1,7 @@
 /* ShopPage.css */
 
 .shop-page {
-  padding: 40px 0 80px;
+  padding: 110px 0 80px;
   background-color: #ffffff; /* canvas */
   font-family: 'Forma DJR Micro', 'Manrope', 'Inter', sans-serif;
 }
@@ -231,8 +231,40 @@
 }
 
 /* Responsive Styles */
+.mobile-filter-toggle-btn {
+  display: none;
+}
+
 @media (max-width: 1024px) {
-  .filter-bar {
+  .mobile-filter-toggle-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background-color: #ffffff;
+    border: 1px solid #c2c2c2; /* steel */
+    border-radius: 4px;
+    padding: 0 16px;
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #1a1a1a;
+    height: 42px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .mobile-filter-toggle-btn:hover {
+    background-color: #f7f7f7;
+    border-color: #1a1a1a;
+  }
+
+  .filter-bar.mobile-collapsed {
+    display: none !important;
+  }
+
+  .filter-bar.mobile-open {
+    display: flex !important;
     flex-direction: column;
     align-items: stretch;
     gap: 16px;
@@ -270,5 +302,49 @@
 
   .filter-bar-right .filter-dropdown-container {
     width: 100%;
+  }
+}
+
+@media (max-width: 767px) {
+  /* 2 Columns on Mobile for better UX instead of 1 huge column */
+  .shop-layout-horizontal .grid-4 {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 12px !important;
+  }
+
+  .shop-layout-horizontal .product-card {
+    padding: 12px !important;
+  }
+
+  .shop-layout-horizontal .product-card-img-wrap {
+    margin-bottom: 8px !important;
+  }
+
+  .shop-layout-horizontal .product-card-img {
+    padding: 8px !important;
+  }
+
+  .shop-layout-horizontal .product-card-title {
+    font-size: 14px !important;
+    height: 36px;
+    line-height: 1.3;
+  }
+
+  .shop-layout-horizontal .price-md {
+    font-size: 16px !important;
+  }
+
+  .shop-layout-horizontal .product-card-footer {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+    padding-top: 8px !important;
+  }
+
+  .shop-layout-horizontal .product-card-footer .btn {
+    width: 100%;
+    height: 36px;
+    font-size: 11px;
+    padding: 0 8px;
   }
 }

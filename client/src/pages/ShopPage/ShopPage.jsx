@@ -37,6 +37,7 @@ const ShopPage = () => {
   const [products, setProducts] = useState([]);
   const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [showMobileFilters, setShowMobileFilters] = useState(false);
 
   const currentCat = searchParams.get("category") || "All";
   const currentSearch = searchParams.get("search") || "";
@@ -183,10 +184,18 @@ const ShopPage = () => {
               {total} product{total !== 1 ? "s" : ""} found
             </p>
           </div>
+          {/* Mobile Filter Toggle */}
+          <button 
+            className="mobile-filter-toggle-btn" 
+            onClick={() => setShowMobileFilters(!showMobileFilters)}
+          >
+            {showMobileFilters ? <FiX size={16} /> : <FiFilter size={16} />}
+            {showMobileFilters ? "Hide Filters" : "Filters & Sort"}
+          </button>
         </div>
 
         {/* Premium Horizontal Filter Bar */}
-        <div className="filter-bar">
+        <div className={`filter-bar ${showMobileFilters ? "mobile-open" : "mobile-collapsed"}`}>
           <div className="filter-bar-left">
             {/* Category Dropdown */}
             <div className="filter-dropdown-container">
