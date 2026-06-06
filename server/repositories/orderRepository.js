@@ -60,7 +60,7 @@ export const findByIdWithBuyer = async (orderId) => {
 export const findByBuyerId = async (userId) => {
   const result = await db.query(
     `${ORDER_WITH_ITEMS_SQL}
-     WHERE o.buyer_id = $1 AND o.paid_at IS NOT NULL
+     WHERE o.buyer_id = $1
      GROUP BY o.id, s.id`,
     [userId],
   );
@@ -70,7 +70,6 @@ export const findByBuyerId = async (userId) => {
 export const findAllPaid = async () => {
   const result = await db.query(
     `${ORDER_WITH_ITEMS_SQL}
-     WHERE o.paid_at IS NOT NULL
      GROUP BY o.id, s.id`,
   );
   return result.rows;
