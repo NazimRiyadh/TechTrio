@@ -5,6 +5,7 @@ import Redis from "ioredis";
 // Establish Redis connection
 const redisClient = new Redis(
   process.env.REDIS_URL || "redis://localhost:6379",
+  { maxRetriesPerRequest: null }
 );
 
 redisClient.on("error", (err) => {
