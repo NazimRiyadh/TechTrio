@@ -48,4 +48,6 @@ export const productQuery = z.object({
     (val) => (val === undefined || val === null ? undefined : Number(val)),
     z.number().min(0, "Ratings filter must be a number between 0 and 5").max(5, "Ratings filter must be a number between 0 and 5").optional()
   ),
+  category: z.string().optional(),
+  search: z.string().optional(),
 });

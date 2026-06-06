@@ -24,7 +24,11 @@ export const validateQuery = (schema) => (req, res, next) => {
     const errorMessages = result.error.issues.map((err) => err.message).join(", ");
     return next(new ErrorHandler(errorMessages, 400));
   }
-  req.query = result.data; // Assign validated and coerced data
+  
+  // Express 5 makes req.query a getter-only property. Mutate its keys instead of reassigning.
+  for (const key in req.query) {
+    delete req.query[key];
+  }
+  Object.assign(req.query, result.data);
   next();
 };
-
