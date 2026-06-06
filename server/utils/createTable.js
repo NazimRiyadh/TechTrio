@@ -9,10 +9,10 @@ import { createOrdersTable } from "../models/orders.table.js";
 export const createTable=async()=>{
     try {
         await createUserTable()
-        await createShippingInfoTable()
         await createProductsTable()
         await createProductReviewsTable()
         await createOrdersTable()
+        await createShippingInfoTable()
         await createOrderItemTable()
         await createPaymentsTable()
         console.log("All tables created succesfully")
