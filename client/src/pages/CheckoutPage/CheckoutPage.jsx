@@ -27,19 +27,24 @@ let stripePromise = null;
 const getStripe = async () => {
   if (stripePromise) return stripePromise;
 
-  // Prefer env var, fallback to fetching from server
-  let key = stripeKey;
-  if (!key) {
-    try {
-      const { data } = await API.get("/api/v1/payment/stripe-key");
-      key = data.stripePublishableKey;
-    } catch {
-      console.error("Could not fetch Stripe publishable key");
-      return null;
+  // Try fetching from backend first to ensure matching credentials
+  try {
+    const { data } = await API.get("/api/v1/payment/stripe-key");
+    const key = data.stripePublishableKey;
+    if (key) {
+      stripePromise = loadStripe(key);
+      return stripePromise;
     }
+  } catch (err) {
+    console.error("Could not fetch Stripe publishable key from server, falling back to env var", err);
   }
-  stripePromise = loadStripe(key);
-  return stripePromise;
+
+  if (stripeKey) {
+    stripePromise = loadStripe(stripeKey);
+    return stripePromise;
+  }
+
+  return null;
 };
 
 /* ─────────────────────────────────────────────────
