@@ -18,7 +18,7 @@ const products = [
     category: "Laptops & Desktops",
     stock: 15,
     images: [
-      { public_id: "zephyrus_g14", url: "https://dlcdnwebmenu.asus.com/dms/global/products/laptops/rog-zephyrus-g14-2024.jpg" }
+      { public_id: "zephyrus_g14", url: "https://images.unsplash.com/photo-1603302576837-37561b2e2302?auto=format&fit=crop&w=800&q=80" }
     ]
   },
   {
@@ -28,7 +28,7 @@ const products = [
     category: "Smartphones & Tablets",
     stock: 25,
     images: [
-      { public_id: "iphone_15_pro", url: "https://www.apple.com/v/iphone-15-pro/c/images/overview/welcome/hero_endframe__ov6niovv9uqq_large.jpg" }
+      { public_id: "iphone_15_pro", url: "https://images.unsplash.com/photo-1510557880182-3d4d3cba35a5?auto=format&fit=crop&w=800&q=80" }
     ]
   },
   {
@@ -38,7 +38,7 @@ const products = [
     category: "Audio & Headphones",
     stock: 50,
     images: [
-      { public_id: "sony_xm5", url: "https://m.media-amazon.com/images/I/61+oA9I0nDL._AC_SL1500_.jpg" }
+      { public_id: "sony_xm5", url: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=800&q=80" }
     ]
   },
   {
@@ -48,7 +48,7 @@ const products = [
     category: "Monitors & Displays",
     stock: 10,
     images: [
-      { public_id: "samsung_g9", url: "https://m.media-amazon.com/images/I/81it6q8T+VL._AC_SL1500_.jpg" }
+      { public_id: "samsung_g9", url: "https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?auto=format&fit=crop&w=800&q=80" }
     ]
   },
   {
@@ -58,7 +58,7 @@ const products = [
     category: "Gadgets & Drones",
     stock: 5,
     images: [
-      { public_id: "mavic_3_pro", url: "https://m.media-amazon.com/images/I/61Kz2X6Y6aL._AC_SL1500_.jpg" }
+      { public_id: "mavic_3_pro", url: "https://images.unsplash.com/photo-1527977966376-1c8408f9f108?auto=format&fit=crop&w=800&q=80" }
     ]
   },
   {
@@ -68,7 +68,7 @@ const products = [
     category: "Peripherals & Gaming",
     stock: 30,
     images: [
-      { public_id: "keychron_q6", url: "https://m.media-amazon.com/images/I/71X8k7S8L1L._AC_SL1500_.jpg" }
+      { public_id: "keychron_q6", url: "https://images.unsplash.com/photo-1618384887929-16ec33fab9ef?auto=format&fit=crop&w=800&q=80" }
     ]
   }
 ];
@@ -84,7 +84,7 @@ const seed = async () => {
     const creatorId = userResult.rows[0].id;
 
     // 2. Clear existing products (optional)
-    // await db.query("DELETE FROM products");
+    await db.query("DELETE FROM products");
 
     // 3. Insert products
     for (const p of products) {
