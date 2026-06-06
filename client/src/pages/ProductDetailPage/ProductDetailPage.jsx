@@ -95,7 +95,7 @@ const ProductDetailPage = () => {
               </div>
               <span className="caption-md text-graphite">({reviews.length} review{reviews.length !== 1 ? "s" : ""})</span>
             </div>
-            <p className="display-md text-primary" style={{ marginBottom: 20 }}>${Number(product.price).toFixed(2)}</p>
+            <p className="display-md text-primary" style={{ marginBottom: 20 }}>৳{Number(product.price).toLocaleString("en-BD")}</p>
             <p className="body-md text-charcoal" style={{ marginBottom: 24 }}>{product.description}</p>
 
             {/* Stock */}

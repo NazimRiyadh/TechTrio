@@ -10,9 +10,10 @@ export const isAuthenticated = catchAsyncErrors(async (req, res, next) => {
   }
 
   const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
-  const user = await db.query(`SELECT * FROM users WHERE id = $1`, [
-    decoded.id,
-  ]);
+  const user = await db.query(
+    `SELECT id, name, email, role, avatar, created_at FROM users WHERE id = $1`,
+    [decoded.id],
+  );
   if (user.rows.length === 0) {
     return next(new ErrorHandler("User not found", 404));
   }

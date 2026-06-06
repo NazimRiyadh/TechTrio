@@ -46,7 +46,7 @@ const OrderDetailPage = () => {
                       <p className="caption-md text-graphite">Qty: {item.quantity}</p>
                     </div>
                   </div>
-                  <span className="body-emphasis">${(Number(item.price) * item.quantity).toFixed(2)}</span>
+                  <span className="body-emphasis">৳{(Number(item.price) * item.quantity).toLocaleString("en-BD")}</span>
                 </div>
               ))}
             </div>
@@ -62,11 +62,11 @@ const OrderDetailPage = () => {
           <div className="cart-summary card" style={{ padding: 28 }}>
             <h2 className="display-xs" style={{ marginBottom: 16 }}>Summary</h2>
             <div className="cart-summary-row flex-between body-md"><span>Status</span><span className="badge badge-ink">{order.order_status}</span></div>
-            <div className="cart-summary-row flex-between body-md"><span>Subtotal</span><span>${Number(order.total_price).toFixed(2)}</span></div>
-            <div className="cart-summary-row flex-between body-md"><span>Tax</span><span>${Number(order.tax_price).toFixed(2)}</span></div>
-            <div className="cart-summary-row flex-between body-md"><span>Shipping</span><span>${Number(order.shipping_price).toFixed(2)}</span></div>
+            <div className="cart-summary-row flex-between body-md"><span>Subtotal</span><span>৳{Number(order.total_price).toLocaleString("en-BD")}</span></div>
+            <div className="cart-summary-row flex-between body-md"><span>Tax</span><span>৳{Number(order.tax_price).toLocaleString("en-BD")}</span></div>
+            <div className="cart-summary-row flex-between body-md"><span>Shipping</span><span>৳{Number(order.shipping_price).toLocaleString("en-BD")}</span></div>
             <div className="cart-summary-divider" />
-            <div className="cart-summary-row flex-between display-xs"><span>Total</span><span>${Number(order.total_price).toFixed(2)}</span></div>
+            <div className="cart-summary-row flex-between display-xs"><span>Total</span><span>৳{Number(order.total_price).toLocaleString("en-BD")}</span></div>
             <div className="cart-summary-row flex-between caption-md text-graphite"><span>Placed</span><span>{new Date(order.created_at).toLocaleDateString()}</span></div>
             {order.paid_at && <div className="cart-summary-row flex-between caption-md text-graphite"><span>Paid</span><span>{new Date(order.paid_at).toLocaleDateString()}</span></div>}
           </div>

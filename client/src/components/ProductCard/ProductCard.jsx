@@ -31,7 +31,7 @@ const ProductCard = ({ product }) => {
           <span className="caption-sm text-graphite">({product.review_count || 0})</span>
         </div>
         <div className="product-card-footer flex-between">
-          <span className="price-md">${Number(product.price).toFixed(2)}</span>
+          <span className="price-md">৳{Number(product.price).toLocaleString("en-BD")}</span>
           <button
             className="btn btn-primary btn-sm"
             disabled={product.stock === 0}

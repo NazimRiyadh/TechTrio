@@ -109,7 +109,7 @@ dist
 .docusaurus
 
 # Serverless directories
-.serverless/
+.serverless/    
 
 # FuseBox cache
 .fusebox/
@@ -145,4 +145,7 @@ vite.config.ts.timestamp-*
 
 # Project env config
 config/config.env
+
+#Design.md
+../Design.md
 

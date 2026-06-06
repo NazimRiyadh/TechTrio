@@ -32,7 +32,7 @@ const CartPage = () => {
                 </div>
                 <div className="cart-item-info">
                   <Link to={`/product/${item.id}`} className="body-emphasis text-ink">{item.name}</Link>
-                  <p className="price-md text-primary" style={{ marginTop: 4 }}>${Number(item.price).toFixed(2)}</p>
+                  <p className="price-md text-primary" style={{ marginTop: 4 }}>৳{Number(item.price).toLocaleString("en-BD")}</p>
                 </div>
                 <div className="cart-item-actions">
                   <div className="pdp-qty flex">
@@ -40,7 +40,7 @@ const CartPage = () => {
                     <span className="pdp-qty-val caption-md">{item.quantity}</span>
                     <button className="pdp-qty-btn" onClick={() => updateQty(item.id, item.quantity + 1)}><FiPlus size={14} /></button>
                   </div>
-                  <span className="body-emphasis">${(item.price * item.quantity).toFixed(2)}</span>
+                  <span className="body-emphasis">৳{(item.price * item.quantity).toLocaleString("en-BD")}</span>
                   <button className="btn btn-text-link text-error" onClick={() => removeItem(item.id)}><FiTrash2 size={16} /></button>
                 </div>
               </div>
@@ -49,11 +49,11 @@ const CartPage = () => {
 
           <div className="cart-summary card" style={{ padding: 28 }}>
             <h2 className="display-xs" style={{ marginBottom: 20 }}>Order Summary</h2>
-            <div className="cart-summary-row flex-between body-md"><span>Subtotal</span><span>${subtotal.toFixed(2)}</span></div>
-            <div className="cart-summary-row flex-between body-md"><span>Tax (5%)</span><span>${tax.toFixed(2)}</span></div>
-            <div className="cart-summary-row flex-between body-md"><span>Shipping</span><span>{shipping === 0 ? "Free" : `$${shipping.toFixed(2)}`}</span></div>
+            <div className="cart-summary-row flex-between body-md"><span>Subtotal</span><span>৳{Math.round(subtotal).toLocaleString("en-BD")}</span></div>
+            <div className="cart-summary-row flex-between body-md"><span>Tax (18% VAT)</span><span>৳{Math.round(tax).toLocaleString("en-BD")}</span></div>
+            <div className="cart-summary-row flex-between body-md"><span>Shipping {shipping === 0 ? <small className="text-green">(Free)</small> : ""}</span><span>{shipping === 0 ? "Free" : `৳${Math.round(shipping).toLocaleString("en-BD")}`}</span></div>
             <div className="cart-summary-divider" />
-            <div className="cart-summary-row flex-between display-xs"><span>Total</span><span>${total.toFixed(2)}</span></div>
+            <div className="cart-summary-row flex-between display-xs"><span>Total</span><span>৳{Math.round(total).toLocaleString("en-BD")}</span></div>
             <Link to="/checkout" className="btn btn-primary w-full" style={{ marginTop: 20 }}>Proceed to Checkout <FiArrowRight /></Link>
           </div>
         </div>

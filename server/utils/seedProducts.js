@@ -15,7 +15,7 @@ const products = [
     name: "Asus ROG Zephyrus G14",
     description: "Compact and powerful gaming laptop with AMD Ryzen 9 and RTX 4070. Perfect for pros and creators.",
     price: 1599.99,
-    category: "Laptops",
+    category: "Laptops & Desktops",
     stock: 15,
     images: [
       { public_id: "zephyrus_g14", url: "https://dlcdnwebmenu.asus.com/dms/global/products/laptops/rog-zephyrus-g14-2024.jpg" }
@@ -25,7 +25,7 @@ const products = [
     name: "iPhone 15 Pro Max",
     description: "Titanium design, A17 Pro chip, and the most advanced camera system in an iPhone.",
     price: 1199.00,
-    category: "Smartphones",
+    category: "Smartphones & Tablets",
     stock: 25,
     images: [
       { public_id: "iphone_15_pro", url: "https://www.apple.com/v/iphone-15-pro/c/images/overview/welcome/hero_endframe__ov6niovv9uqq_large.jpg" }
@@ -35,7 +35,7 @@ const products = [
     name: "Sony WH-1000XM5",
     description: "Industry-leading noise cancellation and premium sound quality with 30-hour battery life.",
     price: 399.99,
-    category: "Audio",
+    category: "Audio & Headphones",
     stock: 50,
     images: [
       { public_id: "sony_xm5", url: "https://m.media-amazon.com/images/I/61+oA9I0nDL._AC_SL1500_.jpg" }
@@ -45,7 +45,7 @@ const products = [
     name: "Samsung Odyssey G9 49\"",
     description: "49-inch curved gaming monitor with Dual QHD resolution and 240Hz refresh rate.",
     price: 1299.99,
-    category: "Monitors",
+    category: "Monitors & Displays",
     stock: 10,
     images: [
       { public_id: "samsung_g9", url: "https://m.media-amazon.com/images/I/81it6q8T+VL._AC_SL1500_.jpg" }
@@ -55,7 +55,7 @@ const products = [
     name: "DJI Mavic 3 Pro",
     description: "Triple-camera system for professional aerial photography and 43-minute flight time.",
     price: 2199.00,
-    category: "Gaming",
+    category: "Gadgets & Drones",
     stock: 5,
     images: [
       { public_id: "mavic_3_pro", url: "https://m.media-amazon.com/images/I/61Kz2X6Y6aL._AC_SL1500_.jpg" }
@@ -65,7 +65,7 @@ const products = [
     name: "Keychron Q6 Pro",
     description: "Full-size QMK/VIA wireless mechanical keyboard with aluminum body.",
     price: 199.00,
-    category: "Accessories",
+    category: "Peripherals & Gaming",
     stock: 30,
     images: [
       { public_id: "keychron_q6", url: "https://m.media-amazon.com/images/I/71X8k7S8L1L._AC_SL1500_.jpg" }

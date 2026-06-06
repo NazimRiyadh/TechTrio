@@ -5,7 +5,7 @@ import {
   useEffect,
   useCallback,
 } from "react";
-import API from "../api/axios";
+import { authApi } from "../api/authApi";
 
 const AuthContext = createContext(null);
 
@@ -15,7 +15,7 @@ export const AuthProvider = ({ children }) => {
 
   const fetchUser = useCallback(async () => {
     try {
-      const { data } = await API.get("/api/v1/auth/me");
+      const { data } = await authApi.me();
       setUser(data.user);
     } catch {
       setUser(null);
@@ -29,34 +29,30 @@ export const AuthProvider = ({ children }) => {
   }, [fetchUser]);
 
   const login = async (email, password) => {
-    const { data } = await API.post("/api/v1/auth/login", { email, password });
+    const { data } = await authApi.login(email, password);
     setUser(data.user);
     return data;
   };
 
   const register = async (formData) => {
-    const { data } = await API.post("/api/v1/auth/register", formData, {
-      headers: { "Content-Type": "multipart/form-data" },
-    });
+    const { data } = await authApi.register(formData);
     setUser(data.user);
     return data;
   };
 
   const logout = async () => {
-    await API.post("/api/v1/auth/logout");
+    await authApi.logout();
     setUser(null);
   };
 
   const updateProfile = async (formData) => {
-    const { data } = await API.put("/api/v1/auth/update/profile", formData, {
-      headers: { "Content-Type": "multipart/form-data" },
-    });
+    const { data } = await authApi.updateProfile(formData);
     setUser(data.user);
     return data;
   };
 
   const updatePassword = async (passwords) => {
-    const { data } = await API.put("/api/v1/auth/update/password", passwords);
+    const { data } = await authApi.updatePassword(passwords);
     return data;
   };
 

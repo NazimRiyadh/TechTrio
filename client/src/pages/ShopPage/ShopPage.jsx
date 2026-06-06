@@ -5,7 +5,16 @@ import API from "../../api/axios";
 import ProductCard from "../../components/ProductCard/ProductCard";
 import "./ShopPage.css";
 
-const categories = ["All", "Laptops", "Smartphones", "Audio", "Monitors", "Gaming", "Accessories"];
+const categories = [
+  "All",
+  "Laptops & Desktops", 
+  "Smartphones & Tablets", 
+  "Audio & Headphones", 
+  "Monitors & Displays", 
+  "PC Components", 
+  "Peripherals & Gaming", 
+  "Gadgets & Drones"
+];
 
 const ShopPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();

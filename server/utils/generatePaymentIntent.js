@@ -39,7 +39,7 @@ export const generatePaymentIntent = async (orderId, totalPrice) => {
     // 4. Create Stripe PaymentIntent
     const paymentIntent = await stripe.paymentIntents.create({
       amount: amountInCents,
-      currency: "usd",
+      currency: "bdt",
       metadata: {
         orderId: String(orderId),
       },

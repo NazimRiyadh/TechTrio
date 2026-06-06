@@ -1,52 +1,59 @@
+/**
+ * errorMiddleware.js
+ * Custom error class + global Express error handler.
+ * Handles PostgreSQL-specific error codes instead of MongoDB ones.
+ */
+import { logger } from "../utils/logger.js";
+
 class ErrorHandler extends Error {
   constructor(message, statusCode) {
     super(message);
-    this.statusCode = statusCode;
+    this.statusCode = statusCode || 500;
   }
 }
 
 export const errorMiddleware = (err, req, res, next) => {
-  err.message = err.message || "Internal Server error";
   err.statusCode = err.statusCode || 500;
+  err.message = err.message || "Internal Server Error";
 
-  if (err.code === 11000) {
-    const message = "Duplicate field value entered";
-    err = new ErrorHandler(message, 400);
+  // ── PostgreSQL error codes ─────────────────────────────────────────────────
+  if (err.code === "23505") {
+    // unique_violation
+    const field = err.detail?.match(/Key \((.+?)\)=/)?.[1] || "field";
+    err = new ErrorHandler(`A record with this ${field} already exists.`, 409);
   }
 
-  if (err.name == "JsonWebTokenError") {
-    const message = "Invalid token";
-    err = new ErrorHandler(message, 400);
+  if (err.code === "22P02") {
+    // invalid_text_representation (e.g. malformed UUID)
+    err = new ErrorHandler("Invalid ID format provided.", 400);
   }
 
-  if (err.name == "TokenExpiredError") {
-    const message = "Token expired";
-    err = new ErrorHandler(message, 400);
+  if (err.code === "23503") {
+    // foreign_key_violation
+    err = new ErrorHandler("Referenced resource does not exist.", 400);
   }
 
-  if (err.name === "ValidationError") {
-    const message = Object.values(err.errors).map((value) => value.message);
-    err = new ErrorHandler(message, 400);
-  }
+  // ── JWT errors ─────────────────────────────────────────────────────────────
+  if (err.name === "JsonWebTokenError")
+    err = new ErrorHandler("Invalid authentication token.", 401);
 
-  if (err.name === "CastError") {
-    const message = "Invalid ID";
-    err = new ErrorHandler(message, 400);
-  }
+  if (err.name === "TokenExpiredError")
+    err = new ErrorHandler("Authentication token has expired.", 401);
 
-  if (process.env.NODE_ENV === "development") {
-    console.log(err);
+  // ── Logging ────────────────────────────────────────────────────────────────
+  if (err.statusCode >= 500) {
+    logger.error(err.message, {
+      stack: err.stack,
+      path: req.path,
+      method: req.method,
+    });
+  } else if (process.env.NODE_ENV === "development") {
+    logger.debug(err.message, { code: err.code, path: req.path });
   }
-
-  const errMessage = err.errors
-    ? Object.values(err.errors)
-        .map((value) => value.message)
-        .join(",")
-    : err.message;
 
   return res.status(err.statusCode).json({
     success: false,
-    message: errMessage,
+    message: err.message,
   });
 };
 

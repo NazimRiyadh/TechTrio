@@ -24,7 +24,7 @@ export const globalLimiter = rateLimit({
     prefix: "rl:global:",
   }),
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100, // limit each IP to 100 requests per windowMs
+  max: 200, // limit each IP to 200 requests per windowMs
   standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
   legacyHeaders: false, // Disable the `X-RateLimit-*` headers
   handler: (req, res, next) => {
@@ -36,14 +36,14 @@ export const globalLimiter = rateLimit({
   },
 });
 
-// 2. Strict Auth Limiter: 10 requests per 1 hour
+// 2. Strict Auth Limiter: 10000 requests per 1 hour
 export const authLimiter = rateLimit({
   store: new RedisStore({
     sendCommand: (...args) => redisClient.call(...args),
     prefix: "rl:auth:",
   }),
   windowMs: 60 * 60 * 1000, // 1 hour
-  max: 10, // limit each IP to 10 requests per hour
+  max: 20, // limit each IP to 20 requests per hour
   standardHeaders: true,
   legacyHeaders: false,
   handler: (req, res, next) => {

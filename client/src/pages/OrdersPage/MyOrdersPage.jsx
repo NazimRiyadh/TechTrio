@@ -43,7 +43,7 @@ const MyOrdersPage = () => {
                 </div>
                 <div className="order-row-meta flex gap-md" style={{ alignItems: "center" }}>
                   <span className={`badge ${statusColor[order.order_status] || "badge-outline"}`}>{order.order_status}</span>
-                  <span className="body-emphasis">${Number(order.total_price).toFixed(2)}</span>
+                  <span className="body-emphasis">৳{Number(order.total_price).toLocaleString("en-BD")}</span>
                   <Link to={`/order/${order.id}`} className="btn btn-outline-ink btn-sm"><FiEye size={14} /> View</Link>
                 </div>
               </div>

@@ -1,14 +1,23 @@
 import pkg from "pg";
+import { config } from "../config/index.js";
 
 const { Pool } = pkg;
 
-const db = new Pool({
-  user: process.env.DB_USER,
-  host: process.env.DB_HOST,
-  port: process.env.DB_PORT,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_NAME,
-});
+const poolConfig = config.db.connectionString
+  ? {
+      connectionString: config.db.connectionString,
+      ssl: config.nodeEnv === "production" ? { rejectUnauthorized: false } : false,
+    }
+  : {
+      user: config.db.user,
+      host: config.db.host,
+      port: config.db.port,
+      password: config.db.password,
+      database: config.db.database,
+      ssl: config.nodeEnv === "production" ? { rejectUnauthorized: false } : false,
+    };
+
+const db = new Pool(poolConfig);
 
 try {
   await db.connect();

@@ -1,5 +1,12 @@
 import jwt from "jsonwebtoken";
 
+// Strip any fields that must never leave the server
+const sanitizeUser = (user) => {
+  const { password, reset_password_token, reset_password_expires, ...safe } =
+    user;
+  return safe;
+};
+
 export const sendToken = (user, statusCode, res) => {
   const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET_KEY, {
     expiresIn: process.env.JWT_EXPIRES_IN,
@@ -15,6 +22,7 @@ export const sendToken = (user, statusCode, res) => {
   res.status(statusCode).json({
     success: true,
     token,
-    user,
+    user: sanitizeUser(user),
   });
 };
+

@@ -1,0 +1,582 @@
+/* ---------- Admin Layout Base (Remos Light Theme) ---------- */
+.admin-layout {
+  display: flex;
+  min-height: 100vh;
+  background-color: var(--color-cloud);
+  font-family: var(--font-family);
+  color: var(--color-ink);
+}
+
+/* ---------- Sidebar Styles (Crisp White & Blue Active) ---------- */
+.admin-sidebar {
+  display: flex;
+  flex-direction: column;
+  width: 260px;
+  background-color: var(--color-canvas);
+  color: var(--color-graphite);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 100;
+  border-right: 1px solid var(--color-hairline);
+  box-shadow: var(--shadow-none);
+  position: sticky;
+  top: 0;
+  height: 100vh;
+}
+
+.admin-sidebar.collapsed {
+  width: 76px;
+}
+
+/* Sidebar Header */
+.admin-sidebar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  height: 70px;
+  border-bottom: 1px solid var(--color-hairline);
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+/* Collapsed: header is fully centered around one element */
+.admin-sidebar.collapsed .admin-sidebar-header {
+  padding: 0;
+  justify-content: center;
+}
+
+.admin-sidebar-logo {
+  font-size: 26px;
+  font-weight: 900;
+  color: var(--color-ink);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  letter-spacing: -1.5px;
+  white-space: nowrap;
+  min-width: 0;
+}
+
+.admin-sidebar-logo span:not(.admin-badge) {
+  color: var(--color-primary);
+}
+
+/* Admin badge pill next to logo */
+.admin-badge {
+  display: inline-flex;
+  align-items: center;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  background: rgba(2, 74, 216, 0.1);
+  color: var(--color-primary);
+  padding: 2px 7px;
+  border-radius: 20px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* Collapsed state: logo-letter is the t. icon badge */
+.logo-letter {
+  font-size: 15px;
+  font-weight: 900;
+  color: var(--color-on-primary);
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-primary);
+  border-radius: var(--rounded-lg);
+  flex-shrink: 0;
+  letter-spacing: -0.5px;
+  font-family: var(--font-family);
+}
+
+/* Button that wraps logo-letter when collapsed (click to expand) */
+.sidebar-collapsed-toggle-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.15s;
+}
+.sidebar-collapsed-toggle-btn:hover {
+  opacity: 0.8;
+}
+
+.sidebar-collapse-toggle {
+  background: transparent;
+  color: #94a3b8;
+  border-radius: var(--rounded-md);
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.sidebar-collapse-toggle:hover {
+  background: var(--color-cloud);
+  color: var(--color-ink);
+}
+
+/* Quick Admin Profile Card */
+.admin-profile-card {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  padding: var(--spacing-xl) 24px;
+  border-bottom: 1px solid var(--color-hairline);
+  background: transparent;
+}
+
+.admin-sidebar.collapsed .admin-profile-card {
+  padding: var(--spacing-xl) 0;
+  justify-content: center;
+}
+
+.admin-profile-avatar-wrapper {
+  position: relative;
+}
+
+.admin-profile-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--rounded-md);
+  object-fit: cover;
+  border: 2px solid var(--color-canvas);
+  box-shadow: var(--shadow-soft-lift);
+  background: var(--color-cloud);
+}
+
+.admin-profile-avatar.fallback {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--rounded-md);
+  background: var(--color-cloud);
+  color: var(--color-graphite);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--color-canvas);
+  box-shadow: var(--shadow-soft-lift);
+}
+
+.admin-status-dot {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 12px;
+  height: 12px;
+  background-color: #22c55e; /* Vibrant Remos green dot */
+  border: 2px solid var(--color-canvas);
+  border-radius: 50%;
+}
+
+.admin-profile-info {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.admin-profile-name {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--color-ink);
+}
+
+.admin-profile-role {
+  font-size: 11px;
+  color: var(--color-graphite);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 600;
+}
+
+/* Sidebar Navigation Items */
+.admin-sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 24px 16px;
+  flex-grow: 1;
+  overflow-y: auto;
+}
+
+.admin-sidebar.collapsed .admin-sidebar-nav {
+  padding: 24px 10px;
+}
+
+.admin-nav-item {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  padding: 12px 16px;
+  color: var(--color-charcoal);
+  border-radius: var(--rounded-lg);
+  font-weight: 600;
+  font-size: 14.5px;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  width: 100%;
+  background: transparent;
+  text-align: left;
+}
+
+.admin-sidebar.collapsed .admin-nav-item {
+  padding: 12px 0;
+  justify-content: center;
+}
+
+.admin-nav-item .nav-icon {
+  flex-shrink: 0;
+  transition: transform 0.2s;
+  color: var(--color-graphite);
+}
+
+.admin-nav-item .nav-label {
+  transition: opacity 0.2s;
+  white-space: nowrap;
+}
+
+.admin-sidebar.collapsed .admin-nav-item .nav-label {
+  display: none;
+}
+
+/* Hover and Active states (Remos Theme style) */
+.admin-nav-item:hover {
+  background: var(--color-cloud);
+  color: var(--color-ink);
+}
+
+.admin-nav-item:hover .nav-icon {
+  color: var(--color-ink);
+  transform: translateX(1px);
+}
+
+.admin-sidebar.collapsed .admin-nav-item:hover .nav-icon {
+  transform: scale(1.05);
+}
+
+.admin-nav-item.active {
+  background: var(--color-primary-soft);
+  color: var(--color-primary);
+}
+
+.admin-nav-item.active .nav-icon {
+  color: var(--color-primary);
+}
+
+/* Sidebar Footer Operations */
+.admin-sidebar-footer {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 16px;
+  border-top: 1px solid var(--color-hairline);
+}
+
+.admin-sidebar.collapsed .admin-sidebar-footer {
+  padding: 16px 10px;
+}
+
+.store-link {
+  color: var(--color-primary);
+}
+.store-link:hover {
+  background: var(--color-primary-soft);
+  color: var(--color-primary-deep);
+}
+
+.logout-btn {
+  color: var(--color-error);
+}
+.logout-btn:hover {
+  background: var(--color-bloom-rose);
+  color: var(--color-bloom-deep);
+}
+
+/* ---------- Main Admin Panel Layout ---------- */
+.admin-main-container {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  min-width: 0;
+}
+
+/* Glassmorphic Topbar Header (Remos Clean White) */
+.admin-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 70px;
+  padding: 0 var(--spacing-xl);
+  background: var(--color-canvas);
+  border-bottom: 1px solid var(--color-hairline);
+  position: sticky;
+  top: 0;
+  z-index: 90;
+  box-shadow: var(--shadow-none);
+}
+
+.admin-page-title {
+  color: var(--color-ink);
+  font-weight: 800;
+  margin: 0;
+  letter-spacing: -0.5px;
+}
+
+.admin-topbar-right {
+  align-items: center;
+}
+
+.store-btn {
+  color: var(--color-primary);
+  border-color: var(--color-primary-soft);
+  background: transparent;
+  font-weight: 700;
+  border-radius: var(--rounded-md);
+  transition: all 0.2s;
+}
+
+.store-btn:hover {
+  background: var(--color-primary-soft);
+  border-color: var(--color-primary);
+}
+
+.admin-topbar-profile {
+  align-items: center;
+  padding-left: var(--spacing-lg);
+  border-left: 1px solid var(--color-hairline);
+}
+
+.admin-topbar-avatar {
+  width: 38px;
+  height: 38px;
+  border-radius: var(--rounded-md);
+  overflow: hidden;
+  border: 2px solid var(--color-canvas);
+  box-shadow: var(--shadow-soft-lift);
+  background: var(--color-cloud);
+}
+
+.admin-topbar-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.fallback-avatar {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-graphite);
+}
+
+.admin-topbar-info {
+  line-height: 1.25;
+}
+
+.topbar-name {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--color-ink);
+}
+
+.topbar-email {
+  font-size: 11px;
+  color: var(--color-graphite);
+  font-weight: 500;
+}
+
+/* Content Viewport */
+.admin-content-viewport {
+  flex-grow: 1;
+  padding: var(--spacing-xl);
+  overflow-y: auto;
+  max-width: var(--max-width);
+  width: 100%;
+  margin: 0 auto;
+}
+
+/* ---------- Mobile Styles ---------- */
+.admin-mobile-header {
+  display: none;
+}
+
+.admin-sidebar-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(15, 23, 42, 0.2);
+  backdrop-filter: blur(2px);
+  z-index: 99;
+  animation: fadeIn 0.2s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.desktop-only {
+  display: flex;
+}
+
+@media (max-width: 1024px) {
+  .admin-sidebar {
+    width: 76px;
+  }
+  /* In tablet collapsed view, hide text logo — the JSX already handles this
+     by conditionally rendering only the logo-letter button */
+  .admin-sidebar .admin-profile-card {
+    padding: var(--spacing-xl) 0;
+    justify-content: center;
+  }
+  .admin-sidebar .admin-profile-info {
+    display: none;
+  }
+  .admin-sidebar .admin-sidebar-nav {
+    padding: 24px 10px;
+  }
+  .admin-sidebar .admin-nav-item .nav-label {
+    display: none;
+  }
+  .admin-sidebar .admin-sidebar-footer {
+    padding: 16px 10px;
+  }
+  .desktop-only {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .admin-layout {
+    flex-direction: column;
+  }
+  
+  .admin-mobile-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 60px;
+    padding: 0 16px;
+    background: var(--color-canvas);
+    color: var(--color-ink);
+    position: sticky;
+    top: 0;
+    z-index: 110;
+    border-bottom: 1px solid var(--color-hairline);
+    box-shadow: var(--shadow-none);
+  }
+  
+  .admin-mobile-logo {
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--color-ink);
+  }
+  
+  .admin-mobile-logo span {
+    color: var(--color-primary);
+  }
+  
+  .admin-mobile-logo small {
+    font-size: 10px;
+    background: rgba(2, 74, 216, 0.08);
+    color: var(--color-primary);
+    padding: 2px 6px;
+    border-radius: var(--rounded-md);
+    margin-left: 6px;
+    font-weight: 700;
+  }
+  
+  .admin-hamburger-btn {
+    background: transparent;
+    color: var(--color-ink);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .admin-mobile-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: var(--rounded-md);
+    overflow: hidden;
+    border: 1.5px solid var(--color-primary);
+  }
+  
+  .admin-mobile-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .admin-avatar-fallback {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--color-cloud);
+    color: var(--color-graphite);
+  }
+  
+  /* Show sidebar as a sliding drawer on mobile */
+  .admin-sidebar {
+    position: fixed;
+    top: 0;
+    left: -260px;
+    height: 100vh;
+    width: 260px !important;
+    z-index: 120;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .admin-sidebar.mobile-open {
+    transform: translateX(260px);
+  }
+
+  .admin-sidebar .admin-sidebar-logo {
+    display: flex;
+  }
+
+  .admin-sidebar .logo-letter {
+    display: none;
+  }
+
+  .admin-sidebar .admin-profile-info {
+    display: flex;
+  }
+
+  .admin-sidebar .admin-nav-item .nav-label {
+    display: flex;
+  }
+
+  .admin-sidebar .admin-sidebar-nav {
+    padding: 24px 16px;
+  }
+
+  .admin-sidebar .admin-sidebar-footer {
+    padding: 16px;
+  }
+  
+  .admin-topbar {
+    display: none;
+  }
+  
+  .admin-content-viewport {
+    padding: 16px;
+  }
+}
+
+
