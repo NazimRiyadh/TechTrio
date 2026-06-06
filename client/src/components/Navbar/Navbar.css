@@ -5,15 +5,20 @@
   position: sticky;
   top: 0;
   z-index: 100;
+  border-top: 3px solid var(--color-primary);
+  box-shadow: 0 4px 20px rgba(26, 26, 26, 0.05);
 }
 
 /* ------- Main Bar ------- */
 .nav-bar-top {
-  background: var(--color-canvas);
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   height: var(--nav-height);
   display: flex;
   align-items: center;
-  border-bottom: 1px solid var(--color-hairline);
+  border-bottom: 1px solid rgba(26, 26, 26, 0.08);
+  transition: all 0.3s ease;
 }
 
 /* 3-column grid: logo | links | actions */
@@ -31,11 +36,16 @@
 /* ------- Logo ------- */
 .nav-logo {
   color: var(--color-ink);
-  font-weight: 900;
-  letter-spacing: -1.5px;
-  font-size: 32px;
+  font-weight: 800;
+  letter-spacing: -1.2px;
+  font-size: 26px;
   white-space: nowrap;
   flex-shrink: 0;
+  transition: opacity 0.2s ease;
+  font-family: var(--font-family);
+}
+.nav-logo:hover {
+  opacity: 0.9;
 }
 .nav-logo .text-primary {
   color: var(--color-primary);
@@ -51,13 +61,15 @@
 
 .nav-link {
   color: var(--color-ink);
-  padding: 8px 14px;
+  font-weight: 600;
+  padding: 8px 16px;
   border-radius: var(--rounded-md);
-  transition: background 0.15s;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   white-space: nowrap;
 }
 .nav-link:hover {
-  background: var(--color-cloud);
+  background: var(--color-primary-soft);
+  color: var(--color-primary-deep);
 }
 
 /* ------- Categories Dropdown ------- */
@@ -139,16 +151,18 @@
   width: 210px;
   padding: 8px 12px 8px 36px;
   background: var(--color-cloud);
-  border: 1px solid transparent;
+  border: 1px solid var(--color-steel);
   border-radius: var(--rounded-md);
   font-size: 14px;
   outline: none;
-  transition: border-color 0.2s, width 0.3s;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  color: var(--color-ink);
 }
 .nav-search-input:focus {
   border-color: var(--color-primary);
   width: 260px;
   background: var(--color-canvas);
+  box-shadow: 0 0 0 3px var(--color-primary-soft);
 }
 
 /* Cart / Icon buttons */

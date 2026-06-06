@@ -109,9 +109,11 @@ const Navbar = () => {
                     <Link to="/profile" className="dropdown-item" onClick={() => setUserMenu(false)}>
                       <FiUser size={16} /> Profile
                     </Link>
-                    <Link to="/orders" className="dropdown-item" onClick={() => setUserMenu(false)}>
-                      <FiPackage size={16} /> My Orders
-                    </Link>
+                    {user.role !== "admin" && (
+                      <Link to="/orders" className="dropdown-item" onClick={() => setUserMenu(false)}>
+                        <FiPackage size={16} /> My Orders
+                      </Link>
+                    )}
                     {user.role === "admin" && (
                       <Link to="/admin" className="dropdown-item" onClick={() => setUserMenu(false)}>
                         <FiSettings size={16} /> Admin Panel

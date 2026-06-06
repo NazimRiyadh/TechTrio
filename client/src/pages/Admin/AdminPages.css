@@ -1268,4 +1268,29 @@
   }
 }
 
+/* ---------- Bento Grid Layout ---------- */
+.admin-bento-grid {
+  display: grid;
+  grid-template-columns: 1.8fr 1.2fr;
+  gap: var(--spacing-lg);
+  align-items: start;
+}
+
+.bento-left-col,
+.bento-right-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.bento-card {
+  height: 100%;
+}
+
+@media (max-width: 1200px) {
+  .admin-bento-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+
 

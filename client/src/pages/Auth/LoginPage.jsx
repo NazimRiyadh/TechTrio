@@ -15,9 +15,13 @@ const LoginPage = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      await login(form.email, form.password);
+      const data = await login(form.email, form.password);
       showToast("Welcome back!");
-      navigate("/");
+      if (data?.user?.role === "admin") {
+        navigate("/admin");
+      } else {
+        navigate("/");
+      }
     } catch (err) { showToast(err.response?.data?.message || "Login failed", "error"); }
     finally { setLoading(false); }
   };
