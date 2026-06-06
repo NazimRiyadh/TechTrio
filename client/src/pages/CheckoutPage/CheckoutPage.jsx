@@ -362,7 +362,7 @@ const CheckoutPage = () => {
                           }
                         />
                       </div>
-                      <div className="flex gap-md">
+                      <div className="form-row">
                         <div style={{ flex: 1 }}>
                           <label className="input-label">City</label>
                           <input
@@ -396,7 +396,7 @@ const CheckoutPage = () => {
                           />
                         </div>
                       </div>
-                      <div className="flex gap-md">
+                      <div className="form-row">
                         <div style={{ flex: 1 }}>
                           <label className="input-label">PIN Code</label>
                           <input
@@ -501,7 +501,7 @@ const CheckoutPage = () => {
                       ))}
                     </div>
 
-                    <div className="flex gap-md" style={{ marginTop: 24 }}>
+                    <div className="checkout-actions" style={{ marginTop: 24 }}>
                       <button
                         className="btn btn-outline-ink"
                         onClick={() => setStep(1)}
@@ -512,7 +512,6 @@ const CheckoutPage = () => {
                         className="btn btn-primary"
                         onClick={handlePlaceOrder}
                         disabled={loading}
-                        style={{ flex: 1 }}
                       >
                         {loading ? (
                           <span className="payment-spinner-wrap">

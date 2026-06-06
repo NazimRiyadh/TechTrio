@@ -28,11 +28,16 @@
 }
 
 .hero-overlay {
-  display: none;
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(10, 10, 10, 0.65) 0%, rgba(10, 10, 10, 0.2) 100%);
+  z-index: 1;
+  display: block;
 }
 
 .hero-slide.light .hero-overlay {
-  display: none;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.85) 0%, rgba(255, 255, 255, 0.3) 100%);
+  display: block;
 }
 
 .hero-slide-content {
@@ -293,20 +298,11 @@
 }
 
 @media (max-width: 767px) {
-  .bento-grid-container {
-    grid-template-columns: 1fr;
-    grid-template-areas: none;
-  }
-  .bento-main, .bento-lens, .bento-remote, .bento-case, .bento-detail {
-    grid-area: auto;
-    height: 350px;
-  }
-}
-@media (max-width: 767px) {
   .hero-section { padding: 32px 0; }
   .hero-card { padding: 24px; }
   .hero-image-wrap { min-height: 200px; }
   .grid-categories { grid-template-columns: repeat(2, 1fr); }
+  
   .bento-grid-container {
     grid-template-columns: 1fr;
     grid-template-areas: none;
@@ -314,5 +310,58 @@
   .bento-main, .bento-lens, .bento-remote, .bento-case, .bento-detail {
     grid-area: auto;
     height: 350px;
+  }
+
+  /* Hero Slider Mobile Adaptations */
+  .hero-slider-section {
+    height: 60vh;
+    min-height: 420px;
+  }
+  .hero-slide-content {
+    margin-left: 24px;
+    padding-right: 24px;
+    max-width: 90%;
+  }
+  .hero-slide-content h1,
+  .hero-slide-content .display-xxl {
+    font-size: 36px !important;
+    margin: 10px 0;
+  }
+  .hero-slide-content p,
+  .hero-slide-content .body-lg {
+    font-size: 14.5px !important;
+    margin-bottom: 24px;
+  }
+  .asus-slider-nav {
+    bottom: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .grid-categories {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing-md);
+  }
+  .hero-slider-section {
+    height: 52vh;
+    min-height: 360px;
+  }
+  .hero-slide-content {
+    margin-left: 16px;
+    padding-right: 16px;
+  }
+  .hero-slide-content h1,
+  .hero-slide-content .display-xxl {
+    font-size: 28px !important;
+  }
+  .hero-slide-content p,
+  .hero-slide-content .body-lg {
+    font-size: 13px !important;
+    margin-bottom: 16px;
+  }
+  .hero-actions .btn {
+    padding: 0 16px;
+    height: 40px;
+    font-size: 13.5px;
   }
 }

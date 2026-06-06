@@ -218,12 +218,51 @@
   animation: spin 0.7s linear infinite;
 }
 
+/* ── Shared Cart Layout & Summary Styles ── */
+.cart-layout {
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: 32px;
+  align-items: start;
+}
+
+.cart-summary {
+  position: sticky;
+  top: 120px;
+}
+
+.cart-summary-row {
+  padding: 8px 0;
+}
+
+.cart-summary-divider {
+  height: 1px;
+  background: var(--color-hairline);
+  margin: 12px 0;
+}
+
+/* ── Form and Step Actions Layouts ── */
+.form-row {
+  display: flex;
+  gap: 16px;
+}
+
+.checkout-actions {
+  display: flex;
+  gap: 12px;
+}
+
 /* ── Responsive ── */
 @media (max-width: 1023px) {
+  .cart-layout {
+    grid-template-columns: 1fr;
+  }
+  .cart-summary {
+    position: static;
+  }
   .checkout-card {
     padding: 24px;
   }
-
   .checkout-step-connector {
     width: 24px;
     margin: 0 8px;
@@ -234,28 +273,36 @@
   .checkout-step-label {
     display: none;
   }
-
   .checkout-step-connector {
     width: 20px;
     margin: 0 6px;
   }
-
   .checkout-card {
     padding: 20px;
   }
-
   .checkout-summary-card {
     padding: 20px;
   }
-
   .payment-actions {
     flex-direction: column;
   }
-
   .payment-security {
     flex-direction: column;
     align-items: flex-start;
     gap: 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .form-row {
+    flex-direction: column;
+    gap: 12px;
+  }
+  .checkout-actions {
+    flex-direction: column-reverse;
+  }
+  .checkout-actions button {
+    width: 100%;
   }
 }
 

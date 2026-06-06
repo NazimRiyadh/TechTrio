@@ -129,6 +129,19 @@ const HomePage = () => {
               />
               <div className="hero-overlay" />
             </div>
+
+            <div className="hero-slide-content">
+              <span className="badge badge-primary-soft" style={{ marginBottom: 8, fontSize: "11px", letterSpacing: "1px" }}>
+                {slides[currentSlide].badge}
+              </span>
+              <h1 className="display-xxl">{slides[currentSlide].title}</h1>
+              <p className="body-lg">{slides[currentSlide].subtitle}</p>
+              <div className="hero-actions">
+                <Link to={slides[currentSlide].link} className="btn btn-primary btn-lg">
+                  {slides[currentSlide].cta} <FiArrowRight style={{ marginLeft: 8 }} />
+                </Link>
+              </div>
+            </div>
           </motion.div>
         </AnimatePresence>
 
