@@ -36,15 +36,41 @@ const MyOrdersPage = () => {
         ) : (
           <div className="orders-list">
             {orders.map((order) => (
-              <div key={order.id} className="card order-row" style={{ padding: 20 }}>
-                <div className="order-row-info">
-                  <span className="body-emphasis">Order #{order.id?.slice(0, 8)}</span>
-                  <span className="caption-md text-graphite">{new Date(order.created_at).toLocaleDateString()}</span>
+              <div key={order.id} className="card" style={{ padding: "20px 24px", display: "flex", flexDirection: "column", gap: 16 }}>
+                {/* Header Row */}
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", borderBottom: "1px solid var(--color-hairline)", paddingBottom: 12, flexWrap: "wrap", gap: 12 }}>
+                  <div className="order-row-info">
+                    <span className="body-emphasis" style={{ fontSize: 16 }}>Order #{order.id?.slice(0, 8)}</span>
+                    <span className="caption-md text-graphite">{new Date(order.created_at).toLocaleDateString()}</span>
+                  </div>
+                  <div className="order-row-meta flex gap-md" style={{ alignItems: "center" }}>
+                    <span className={`badge ${statusColor[order.order_status] || "badge-outline"}`}>{order.order_status}</span>
+                    <span className="body-emphasis" style={{ color: "var(--color-ink)", fontSize: 16 }}>৳{Number(order.total_price).toLocaleString("en-BD")}</span>
+                    <Link to={`/order/${order.id}`} className="btn btn-outline-ink btn-sm"><FiEye size={14} /> View Order</Link>
+                  </div>
                 </div>
-                <div className="order-row-meta flex gap-md" style={{ alignItems: "center" }}>
-                  <span className={`badge ${statusColor[order.order_status] || "badge-outline"}`}>{order.order_status}</span>
-                  <span className="body-emphasis">৳{Number(order.total_price).toLocaleString("en-BD")}</span>
-                  <Link to={`/order/${order.id}`} className="btn btn-outline-ink btn-sm"><FiEye size={14} /> View</Link>
+
+                {/* Items List */}
+                <div className="order-items-preview" style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+                  {order.order_items?.map((item, idx) => (
+                    <div key={idx} style={{ display: "flex", alignItems: "center", gap: 12 }}>
+                      <div style={{ width: 40, height: 40, borderRadius: "var(--rounded-md)", overflow: "hidden", background: "var(--color-cloud)", border: "1px solid var(--color-hairline)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                        {item.image ? (
+                          <img src={item.image} alt={item.title} style={{ width: "100%", height: "100%", objectFit: "contain" }} />
+                        ) : (
+                          <FiPackage size={16} style={{ color: "#94a3b8" }} />
+                        )}
+                      </div>
+                      <div style={{ display: "flex", flex: 1, justifyContent: "space-between", alignItems: "center", minWidth: 0 }}>
+                        <span className="truncate body-emphasis" style={{ fontSize: 14, color: "var(--color-ink)", maxWidth: "70%" }} title={item.title}>
+                          {item.title}
+                        </span>
+                        <span className="caption-md text-graphite" style={{ fontSize: 13, whiteSpace: "nowrap" }}>
+                          ৳{Number(item.price).toLocaleString("en-BD")} × {item.quantity}
+                        </span>
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </div>
             ))}

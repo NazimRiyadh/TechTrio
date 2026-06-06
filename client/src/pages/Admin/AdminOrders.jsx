@@ -125,6 +125,7 @@ const AdminOrders = () => {
                   <th style={{ width: "40px" }}></th>
                   <th>Order ID</th>
                   <th>Customer</th>
+                  <th>Items Ordered</th>
                   <th>Order Date</th>
                   <th>Total Charged</th>
                   <th>Fulfillment Status</th>
@@ -168,13 +169,27 @@ const AdminOrders = () => {
                           </div>
                         </td>
                         <td>
+                          <div className="admin-order-items-summary flex-col gap-xxs" style={{ maxWidth: "250px" }} onClick={(e) => e.stopPropagation()}>
+                            {o.order_items?.map((item, idx) => (
+                              <div key={idx} className="flex-between caption-md text-graphite" style={{ borderBottom: idx < o.order_items.length - 1 ? "1px dashed var(--color-hairline)" : "none", paddingBottom: 2, marginBottom: 2 }}>
+                                <span className="truncate" style={{ fontWeight: 600, color: "var(--color-ink)", marginRight: 8 }} title={item.title}>
+                                  {item.title}
+                                </span>
+                                <span style={{ flexShrink: 0, fontSize: "11px", background: "var(--color-cloud)", padding: "1px 5px", borderRadius: "var(--rounded-sm)", fontWeight: 700 }}>
+                                  Qty: {item.quantity}
+                                </span>
+                              </div>
+                            ))}
+                          </div>
+                        </td>
+                        <td>
                           <div className="flex gap-xs text-graphite caption-md">
                             <FiCalendar size={14} style={{ flexShrink: 0, marginTop: 2 }} />
                             <span>{formattedDate}</span>
                           </div>
                         </td>
                         <td className="body-emphasis price-col">
-                          ${Number(o.total_price).toLocaleString(undefined, { minimumFractionDigits: 2 })}
+                          ৳{Number(o.total_price).toLocaleString("en-BD", { minimumFractionDigits: 2 })}
                         </td>
                         <td onClick={(e) => e.stopPropagation()}>
                           <div className={`status-select-wrapper ${getStatusStyle(o.order_status)}`}>
@@ -204,7 +219,7 @@ const AdminOrders = () => {
                       {/* Expandable Order Detail Panel */}
                       {isExpanded && (
                         <tr className="order-expanded-details-row">
-                          <td colSpan="7">
+                          <td colSpan="8">
                             <div className="order-expanded-panel flex">
                               
                               {/* Left Panel: Items Ordered */}

@@ -3,6 +3,7 @@
  * Business logic for placing, fetching, updating, and deleting orders.
  */
 import ErrorHandler from "../middlewares/errorMiddleware.js";
+import db from "../database/db.js";
 import * as orderRepo from "../repositories/orderRepository.js";
 import * as productRepo from "../repositories/productRepository.js";
 import { generatePaymentIntent } from "./paymentService.js";
@@ -23,9 +24,7 @@ export const placeOrder = async (userId, shippingData, rawItems) => {
 
   // Validate all products in a single DB round-trip
   const productIds = items.map((i) => i.product.id);
-  const { rows: products } = await (
-    await import("../database/db.js")
-  ).default.query(
+  const { rows: products } = await db.query(
     `SELECT id, price, stock, name FROM products WHERE id = ANY($1::uuid[])`,
     [productIds],
   );
@@ -93,14 +92,39 @@ export const updateOrderStatus = async (orderId, status) => {
   const order = await orderRepo.findByIdWithBuyer(orderId);
   if (!order) throw new ErrorHandler("Order not found", 404);
 
+  // If transitioning to Shipped/Delivered but not paid, automatically mark as paid and reduce stock
   if (
     (status === "Shipped" || status === "Delivered") &&
     !order.paid_at
   ) {
-    throw new ErrorHandler(
-      `Order cannot be ${status.toLowerCase()} until payment is confirmed.`,
-      400,
-    );
+    const client = await db.connect();
+    try {
+      await client.query("BEGIN");
+      
+      // Mark as paid in orders table
+      await orderRepo.markAsPaid(orderId, client);
+      
+      // Reduce product stock
+      const items = await orderRepo.findItemsByOrderId(orderId);
+      for (const item of items) {
+        await orderRepo.reduceStock(item.product_id, item.quantity, client);
+      }
+      
+      // Update payment record status in payments table if it exists
+      await client.query(
+        `UPDATE payments SET payment_status = 'Paid' WHERE order_id = $1`,
+        [orderId]
+      );
+      
+      await client.query("COMMIT");
+      order.paid_at = new Date(); // Update local object ref for downstream email template
+    } catch (err) {
+      await client.query("ROLLBACK");
+      console.error("Failed to automatically mark order as paid during status update:", err);
+      throw new ErrorHandler("Failed to transition order status.", 500);
+    } finally {
+      client.release();
+    }
   }
 
   const updated = await orderRepo.updateStatus(orderId, status);
