@@ -113,15 +113,33 @@ export const findTopRated = async (minRating = 4.5, limitCount = 8) => {
   return result.rows;
 };
 
-export const findAdminWithFilters = async (conditions, values) => {
+export const findAdminWithFilters = async (conditions, values, limit = 10, offset = 0) => {
+  const whereClause = conditions.length
+    ? `WHERE ${conditions.join(" AND ")}`
+    : "";
+  const finalValues = [...values];
+  const limitIdx = finalValues.length + 1;
+  const offsetIdx = finalValues.length + 2;
+  
+  finalValues.push(limit);
+  finalValues.push(offset);
+
+  const result = await db.query(
+    `SELECT * FROM products ${whereClause} ORDER BY created_at DESC LIMIT $${limitIdx} OFFSET $${offsetIdx}`,
+    finalValues,
+  );
+  return result.rows;
+};
+
+export const countAdminWithFilters = async (conditions, values) => {
   const whereClause = conditions.length
     ? `WHERE ${conditions.join(" AND ")}`
     : "";
   const result = await db.query(
-    `SELECT * FROM products ${whereClause} ORDER BY created_at DESC`,
+    `SELECT COUNT(*)::int AS count FROM products ${whereClause}`,
     values,
   );
-  return result.rows;
+  return result.rows[0]?.count || 0;
 };
 
 export const getAllCategories = async () => {

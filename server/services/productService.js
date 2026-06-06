@@ -93,7 +93,7 @@ export const fetchAllProducts = async (filters, page, limit) => {
   return { products, totalProducts, newProducts, topRatedProducts };
 };
 
-export const fetchAdminProducts = async ({ category, search, stock }) => {
+export const fetchAdminProducts = async ({ category, search, stock }, page = 1, limit = 10) => {
   const conditions = [];
   const values = [];
   let idx = 1;
@@ -114,12 +114,15 @@ export const fetchAdminProducts = async ({ category, search, stock }) => {
   else if (stock === "low") conditions.push(`stock > 0 AND stock <= 5`);
   else if (stock === "out") conditions.push(`stock = 0`);
 
-  const [products, categories] = await Promise.all([
-    productRepo.findAdminWithFilters(conditions, values),
+  const offset = (page - 1) * limit;
+
+  const [products, totalProducts, categories] = await Promise.all([
+    productRepo.findAdminWithFilters(conditions, [...values], limit, offset),
+    productRepo.countAdminWithFilters(conditions, [...values]),
     productRepo.getAllCategories(),
   ]);
 
-  return { products, categories };
+  return { products, totalProducts, categories };
 };
 
 export const updateProduct = async (id, data) => {

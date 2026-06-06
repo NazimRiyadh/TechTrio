@@ -38,17 +38,29 @@ export const fetchAllProducts = catchAsyncErrors(async (req, res) => {
 });
 
 export const fetchAdminProducts = catchAsyncErrors(async (req, res) => {
+  const page = parseInt(req.query.page, 10) || 1;
+  const limit = parseInt(req.query.limit, 10) || 10;
+
   const filters = {
     category: req.query.category,
     search: req.query.search,
     stock: req.query.stock,
   };
-  const { products, categories } = await productService.fetchAdminProducts(filters);
+  const { products, totalProducts, categories } = await productService.fetchAdminProducts(filters, page, limit);
+  const totalPages = Math.ceil(totalProducts / limit);
+
   res.status(200).json({
     success: true,
     products,
-    totalProducts: products.length,
+    totalProducts,
     categories,
+    pagination: {
+      currentPage: page,
+      totalPages,
+      totalProducts,
+      hasNextPage: page < totalPages,
+      hasPrevPage: page > 1,
+    },
   });
 });
 

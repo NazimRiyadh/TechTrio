@@ -7,6 +7,8 @@ import {
   FiSearch,
   FiPackage,
   FiTag,
+  FiChevronLeft,
+  FiChevronRight,
 } from "react-icons/fi";
 import API from "../../api/axios";
 import { useToast } from "../../context/ToastContext";
@@ -37,6 +39,17 @@ const AdminProducts = () => {
   const [categoryFilter, setCategoryFilter] = useState("All");
   const [stockFilter, setStockFilter] = useState("All");
 
+  // Pagination State
+  const [page, setPage] = useState(1);
+  const [limit] = useState(10);
+  const [paginationInfo, setPaginationInfo] = useState({
+    currentPage: 1,
+    totalPages: 1,
+    totalProducts: 0,
+    hasNextPage: false,
+    hasPrevPage: false
+  });
+
   // Create Form State
   const [form, setForm] = useState({ name: "", description: "", price: "", category: "", stock: "" });
   const [images, setImages] = useState(null);
@@ -56,6 +69,11 @@ const AdminProducts = () => {
     const t = setTimeout(() => setDebouncedSearch(searchQuery), 350);
     return () => clearTimeout(t);
   }, [searchQuery]);
+
+  // Reset page when filters change
+  useEffect(() => {
+    setPage(1);
+  }, [categoryFilter, stockFilter, debouncedSearch]);
 
   const handleCategoryChange = (e) => {
     const val = e.target.value;
@@ -78,10 +96,15 @@ const AdminProducts = () => {
       if (categoryFilter !== "All") params.set("category", categoryFilter);
       if (debouncedSearch) params.set("search", debouncedSearch);
       if (stockParam) params.set("stock", stockParam);
+      params.set("page", page);
+      params.set("limit", limit);
 
       const { data } = await API.get(`/api/v1/product/admin/all?${params.toString()}`);
       setProducts(data.products || []);
       setTotalProducts(data.totalProducts || 0);
+      if (data.pagination) {
+        setPaginationInfo(data.pagination);
+      }
       // categories from API always contains all 7 with full counts regardless of filters
       if (data.categories) setAllCategories(data.categories);
     } catch (err) {
@@ -90,7 +113,7 @@ const AdminProducts = () => {
     } finally {
       setLoading(false);
     }
-  }, [showToast, categoryFilter, debouncedSearch, stockParam]);
+  }, [showToast, categoryFilter, debouncedSearch, stockParam, page, limit]);
 
   useEffect(() => {
     fetchProducts();
@@ -731,6 +754,32 @@ const AdminProducts = () => {
                   </div>
                 </div>
               ))}
+            </div>
+
+            {/* Pagination Control Bar */}
+            <div className="admin-pagination-bar flex-between" style={{ borderTop: "1px solid var(--color-hairline)", padding: "16px 20px" }}>
+              <span className="caption-md text-graphite">
+                Showing page <strong>{paginationInfo.currentPage}</strong> of <strong>{paginationInfo.totalPages}</strong> ({paginationInfo.totalProducts} products total)
+              </span>
+              
+              <div className="pagination-buttons flex gap-sm" style={{ display: "flex", gap: "8px", alignItems: "center" }}>
+                <button 
+                  className="btn btn-outline-ink btn-sm page-nav-btn"
+                  disabled={!paginationInfo.hasPrevPage}
+                  onClick={() => setPage((prev) => Math.max(1, prev - 1))}
+                  style={{ display: "inline-flex", alignItems: "center", gap: "4px" }}
+                >
+                  <FiChevronLeft size={16} /> Prev
+                </button>
+                <button 
+                  className="btn btn-outline-ink btn-sm page-nav-btn"
+                  disabled={!paginationInfo.hasNextPage}
+                  onClick={() => setPage((prev) => Math.min(paginationInfo.totalPages, prev + 1))}
+                  style={{ display: "inline-flex", alignItems: "center", gap: "4px" }}
+                >
+                  Next <FiChevronRight size={16} />
+                </button>
+              </div>
             </div>
           </>
         ) : (
