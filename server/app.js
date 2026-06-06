@@ -15,6 +15,27 @@ const app = express();
 
 app.get("/health", (req, res) => res.status(200).json({ status: "ok" }));
 
+app.get("/db-test", async (req, res) => {
+  try {
+    const { default: db } = await import("./database/db.js");
+    const result = await db.query("SELECT COUNT(*) FROM products");
+    res.status(200).json({ success: true, count: result.rows[0].count });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message, stack: err.stack });
+  }
+});
+
+app.get("/redis-test", async (req, res) => {
+  try {
+    const { default: Redis } = await import("ioredis");
+    const redisClient = new Redis(process.env.REDIS_URL || "redis://localhost:6379", { maxRetriesPerRequest: null });
+    const result = await redisClient.ping();
+    res.status(200).json({ success: true, ping: result });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message, stack: err.stack });
+  }
+});
+
 // ── CORS ────────────────────────────────────────────────────────────────────
 app.use(
   cors({
