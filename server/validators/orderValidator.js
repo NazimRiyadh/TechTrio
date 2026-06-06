@@ -16,6 +16,27 @@ export const placeOrder = z.object({
     (val) => (val === undefined || val === null ? "" : String(val).trim()),
     z.string().min(1, "Phone number is required")
   ),
+  orderedItems: z.preprocess(
+    (val) => {
+      if (typeof val === "string") {
+        try {
+          return JSON.parse(val);
+        } catch {
+          return val;
+        }
+      }
+      return val;
+    },
+    z.array(
+      z.object({
+        product: z.object({
+          id: z.string().uuid("Product ID must be a valid UUID"),
+          images: z.array(z.object({ url: z.string().optional() })).optional(),
+        }),
+        quantity: z.number().int().positive("Quantity must be a positive integer"),
+      })
+    ).min(1, "At least one item is required in the order")
+  ),
 });
 
 export const updateStatus = z.object({
