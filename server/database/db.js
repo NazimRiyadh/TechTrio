@@ -20,7 +20,8 @@ const poolConfig = config.db.connectionString
 const db = new Pool(poolConfig);
 
 try {
-  await db.connect();
+  const client = await db.connect();
+  client.release();
   console.log("Connected to the database pool");
 } catch (error) {
   console.log("Error connecting to the database pool", error);
