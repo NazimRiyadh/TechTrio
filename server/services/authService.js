@@ -15,12 +15,23 @@ import ErrorHandler from "../middlewares/errorMiddleware.js";
 
 const SALT_ROUNDS = 10;
 
-export const registerUser = async ({ name, email, password }) => {
+export const registerUser = async ({ name, email, password }, avatarFile) => {
   const existing = await userRepo.findByEmail(email);
   if (existing) throw new ErrorHandler("User already exists", 400);
 
+  let avatar = null;
+  if (avatarFile) {
+    const uploaded = await cloudinary.uploader.upload(avatarFile.tempFilePath, {
+      folder: "bigbazar/profile/avatars",
+      width: 150,
+      height: 150,
+      crop: "fill",
+    });
+    avatar = { public_id: uploaded.public_id, url: uploaded.secure_url };
+  }
+
   const hashedPassword = await bcrypt.hash(password.toString(), SALT_ROUNDS);
-  const user = await userRepo.createUser({ name, email, hashedPassword });
+  const user = await userRepo.createUser({ name, email, hashedPassword, avatar });
   return user;
 };
 

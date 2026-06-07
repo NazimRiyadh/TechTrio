@@ -57,12 +57,12 @@ export const countAll = async () => {
 
 // ── Write ───────────────────────────────────────────────────────────────────
 
-export const createUser = async ({ name, email, hashedPassword }) => {
+export const createUser = async ({ name, email, hashedPassword, avatar = null }) => {
   const result = await db.query(
-    `INSERT INTO users (name, email, password)
-     VALUES ($1, $2, $3)
+    `INSERT INTO users (name, email, password, avatar)
+     VALUES ($1, $2, $3, $4)
      RETURNING *`,
-    [name, email, hashedPassword],
+    [name, email, hashedPassword, avatar],
   );
   return result.rows[0];
 };

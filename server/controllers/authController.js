@@ -12,7 +12,8 @@ export const registerUser = catchAsyncErrors(async (req, res, next) => {
   if (!name || !email || !password)
     return next(new ErrorHandler("Please enter all fields", 400));
 
-  const user = await authService.registerUser({ name, email, password });
+  const avatarFile = req.files?.avatar || null;
+  const user = await authService.registerUser({ name, email, password }, avatarFile);
   sendToken(user, 201, res);
 });
 
