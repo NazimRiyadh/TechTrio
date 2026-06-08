@@ -1310,5 +1310,20 @@
   }
 }
 
+.loading-opacity {
+  opacity: 0.6;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+
+.kpi-card,
+.bento-left-col,
+.bento-right-col,
+.chart-card,
+.chart-container {
+  min-width: 0;
+  max-width: 100%;
+}
+
 
 

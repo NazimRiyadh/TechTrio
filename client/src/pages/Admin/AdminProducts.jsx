@@ -30,6 +30,7 @@ const AdminProducts = () => {
   const [allCategories, setAllCategories] = useState([]); // always all 7, with counts
   const [totalProducts, setTotalProducts] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [initialLoading, setInitialLoading] = useState(true);
   const [showCreate, setShowCreate] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
 
@@ -105,13 +106,14 @@ const AdminProducts = () => {
       if (data.pagination) {
         setPaginationInfo(data.pagination);
       }
-      // categories from API always contains all 7 with full counts regardless of filters
+      // categories from API always contains all 7, with counts
       if (data.categories) setAllCategories(data.categories);
     } catch (err) {
       console.error(err);
       showToast("Failed to load products", "error");
     } finally {
       setLoading(false);
+      setInitialLoading(false);
     }
   }, [showToast, categoryFilter, debouncedSearch, stockParam, page, limit]);
 
@@ -212,7 +214,7 @@ const AdminProducts = () => {
     return <span className="badge stock-badge in">In Stock ({stock})</span>;
   };
 
-  if (loading) {
+  if (initialLoading) {
     return (
       <div className="page-loader">
         <div className="spinner" />
@@ -630,7 +632,7 @@ const AdminProducts = () => {
       )}
 
       {/* Products Table Card */}
-      <section className="card admin-table-card">
+      <section className={`card admin-table-card ${loading ? "loading-opacity" : ""}`}>
         {filteredProducts.length > 0 ? (
           <>
             {/* Desktop View */}
