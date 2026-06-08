@@ -52,7 +52,8 @@ export const fetchAllProducts = async (filters, page, limit) => {
   let idx = 1;
 
   if (availability === "in-stock") conditions.push(`stock > 5`);
-  else if (availability === "limited") conditions.push(`stock > 0 AND stock <= 5`);
+  else if (availability === "limited")
+    conditions.push(`stock > 0 AND stock <= 5`);
   else if (availability === "out-of-stock") conditions.push(`stock = 0`);
 
   if (price) {
@@ -85,7 +86,13 @@ export const fetchAllProducts = async (filters, page, limit) => {
   const [totalProducts, products, newProducts, topRatedProducts] =
     await Promise.all([
       productRepo.countWithFilters(conditions, values),
-      productRepo.findAllWithFilters(conditions, values, safeLimit, offset, sort),
+      productRepo.findAllWithFilters(
+        conditions,
+        values,
+        safeLimit,
+        offset,
+        sort,
+      ),
       productRepo.findNewProducts(),
       productRepo.findTopRated(),
     ]);
@@ -93,7 +100,11 @@ export const fetchAllProducts = async (filters, page, limit) => {
   return { products, totalProducts, newProducts, topRatedProducts };
 };
 
-export const fetchAdminProducts = async ({ category, search, stock }, page = 1, limit = 10) => {
+export const fetchAdminProducts = async (
+  { category, search, stock },
+  page = 1,
+  limit = 10,
+) => {
   const conditions = [];
   const values = [];
   let idx = 1;
@@ -157,7 +168,12 @@ export const postReview = async (userId, productId, { rating, comment }) => {
   if (!purchased)
     throw new ErrorHandler("You have not purchased this product", 403);
 
-  const review = await reviewRepo.upsertReview(userId, productId, rating, comment);
+  const review = await reviewRepo.upsertReview(
+    userId,
+    productId,
+    rating,
+    comment,
+  );
   const avg = await reviewRepo.getAverageRating(productId);
   await productRepo.updateRating(productId, avg);
 
