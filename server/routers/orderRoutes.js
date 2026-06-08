@@ -10,10 +10,11 @@ import {
 import { isAuthenticated, authorizedRoles } from "../middlewares/authMiddleware.js";
 import { validate } from "../middlewares/validateMiddleware.js";
 import * as orderValidator from "../validators/orderValidator.js";
+import { sensitiveLimiter } from "../utils/rateLimiter.js";
 
 const router = express.Router();
 
-router.post("/new", isAuthenticated, validate(orderValidator.placeOrder), placeNewOrder);
+router.post("/new", isAuthenticated, sensitiveLimiter, validate(orderValidator.placeOrder), placeNewOrder);
 router.get("/orders/me", isAuthenticated, fetchMyOrders);
 router.get("/:orderId", isAuthenticated, fetchSingleOrder);
 router.get("/admin/getall", isAuthenticated, authorizedRoles("admin"), fetchAllOrders);

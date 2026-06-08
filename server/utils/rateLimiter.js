@@ -2,56 +2,106 @@ import rateLimit from "express-rate-limit";
 import RedisStore from "rate-limit-redis";
 import Redis from "ioredis";
 
-// Establish Redis connection
-const redisClient = new Redis(
+/**
+ * Redis client
+ */
+export const redisClient = new Redis(
   process.env.REDIS_URL || "redis://localhost:6379",
-  { maxRetriesPerRequest: null }
+  {
+    maxRetriesPerRequest: 1, // prevent hanging requests
+    enableReadyCheck: true,
+  },
 );
 
 redisClient.on("error", (err) => {
-  console.error(
-    "Redis connection failed. Ensure your Redis server is running or the REDIS_URL is correct.",
-  );
+  console.error("Redis error:", err.message);
 });
 
 redisClient.on("connect", () => {
-  console.log("Connected to Redis successfully!");
+  console.log("Redis connected");
 });
 
-// 1. Global Limiter: 100 requests per 15 minutes
-export const globalLimiter = rateLimit({
-  store: new RedisStore({
+/**
+ * Utility: check if Redis is usable
+ */
+const isRedisReady = () => redisClient.status === "ready";
+
+/**
+ * Utility: build Redis store safely
+ */
+const buildStore = (prefix) =>
+  new RedisStore({
     sendCommand: (...args) => redisClient.call(...args),
-    prefix: "rl:global:",
-  }),
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 200, // limit each IP to 200 requests per windowMs
-  standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
-  legacyHeaders: false, // Disable the `X-RateLimit-*` headers
-  handler: (req, res, next) => {
-    res.status(429).json({
-      success: false,
-      message:
-        "Too many requests from this IP, please try again after 15 minutes.",
-    });
-  },
+    prefix,
+  });
+
+/**
+ * Utility: common limiter factory
+ */
+const createLimiter = ({
+  windowMs,
+  max,
+  prefix,
+  message,
+  useUserId = false,
+}) => {
+  return rateLimit({
+    windowMs,
+    max,
+
+    // Smart key: userId if logged in, else IP
+    keyGenerator: (req) => {
+      if (useUserId && req.user?.id) {
+        return `user:${req.user.id}`;
+      }
+      return req.ip;
+    },
+
+    // Skip limiter if Redis is down (fail-open)
+    skip: () => !isRedisReady(),
+
+    // Redis distributed store
+    store: isRedisReady() ? buildStore(prefix) : undefined,
+
+    standardHeaders: true,
+    legacyHeaders: false,
+
+    handler: (req, res) => {
+      res.status(429).json({
+        success: false,
+        message,
+      });
+    },
+  });
+};
+
+/**
+ * Global limiter (general APIs)
+ */
+export const globalLimiter = createLimiter({
+  windowMs: 15 * 60 * 1000, // 15 min
+  max: 200,
+  prefix: "rl:global:",
+  message: "Too many requests. Please try again later.",
 });
 
-// 2. Strict Auth Limiter: 10000 requests per 1 hour
-export const authLimiter = rateLimit({
-  store: new RedisStore({
-    sendCommand: (...args) => redisClient.call(...args),
-    prefix: "rl:auth:",
-  }),
+/**
+ * Auth limiter (login, reset, OTP)
+ */
+export const authLimiter = createLimiter({
   windowMs: 60 * 60 * 1000, // 1 hour
-  max: 20, // limit each IP to 20 requests per hour
-  standardHeaders: true,
-  legacyHeaders: false,
-  handler: (req, res, next) => {
-    res.status(429).json({
-      success: false,
-      message:
-        "Too many login/reset attempts from this IP, please try again after an hour.",
-    });
-  },
+  max: 20,
+  prefix: "rl:auth:",
+  message: "Too many authentication attempts. Please try again after an hour.",
+});
+
+/**
+ * Payment / sensitive actions limiter
+ */
+export const sensitiveLimiter = createLimiter({
+  windowMs: 10 * 60 * 1000, // 10 min
+  max: 10,
+  prefix: "rl:sensitive:",
+  message: "Too many sensitive operations. Slow down.",
+  useUserId: true, // per-user protection
 });

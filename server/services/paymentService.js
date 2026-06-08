@@ -11,24 +11,28 @@ import * as orderRepo from "../repositories/orderRepository.js";
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 // ── Generate Payment Intent ──────────────────────────────────────────────────
-
+/**
+ * Generate payment intent function
+ */
 export const generatePaymentIntent = async (orderId, totalPrice) => {
   const client = await db.connect();
   try {
     await client.query("BEGIN");
 
     // Validate order exists
-    const { rows } = await client.query(
-      `SELECT id FROM orders WHERE id = $1`,
-      [orderId],
-    );
+    const { rows } = await client.query(`SELECT id FROM orders WHERE id = $1`, [
+      orderId,
+    ]);
     if (rows.length === 0) throw new Error("Order not found");
 
     // Idempotency: return existing intent if already created
     const existing = await paymentRepo.findByOrderId(orderId);
     if (existing) {
       await client.query("COMMIT");
-      return { success: true, clientSecret: existing.payment_intent_client_secret };
+      return {
+        success: true,
+        clientSecret: existing.payment_intent_client_secret,
+      };
     }
 
     const amountInCents = Math.round(totalPrice * 100);
@@ -71,18 +75,25 @@ export const handleWebhookEvent = async (rawBody, signature) => {
       process.env.STRIPE_WEBHOOK_SECRET,
     );
   } catch (error) {
-    if (process.env.NODE_ENV === "development" || !process.env.STRIPE_WEBHOOK_SECRET) {
-      console.warn("⚠️ Stripe Webhook verification bypassed/failed:", error.message);
+    if (
+      process.env.NODE_ENV === "development" ||
+      !process.env.STRIPE_WEBHOOK_SECRET
+    ) {
+      console.warn(
+        "Stripe Webhook verification bypassed/failed:",
+        error.message,
+      );
       try {
         event = JSON.parse(rawBody.toString());
       } catch (parseErr) {
         throw new Error(`Fallback body parsing failed: ${parseErr.message}`);
       }
     } else {
-      throw new Error(`Webhook signature verification failed: ${error.message}`);
+      throw new Error(
+        `Webhook signature verification failed: ${error.message}`,
+      );
     }
   }
-
 
   if (event.type !== "payment_intent.succeeded") return;
 

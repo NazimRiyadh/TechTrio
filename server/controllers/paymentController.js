@@ -1,5 +1,5 @@
 import { catchAsyncErrors } from "../middlewares/catchAsyncMiddleware.js";
-import { generatePaymentIntent } from "../utils/generatePaymentIntent.js";
+import { generatePaymentIntent } from "../services/paymentService.js";
 import ErrorHandler from "../middlewares/errorMiddleware.js";
 
 export const processPayment = catchAsyncErrors(async (req, res, next) => {
