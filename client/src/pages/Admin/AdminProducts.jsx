@@ -71,11 +71,6 @@ const AdminProducts = () => {
     return () => clearTimeout(t);
   }, [searchQuery]);
 
-  // Reset page when filters change
-  useEffect(() => {
-    setPage(1);
-  }, [categoryFilter, stockFilter, debouncedSearch]);
-
   const handleCategoryChange = (e) => {
     const val = e.target.value;
     if (val === "NEW") {
@@ -91,7 +86,6 @@ const AdminProducts = () => {
   const stockParam = stockFilter === "In Stock" ? "in" : stockFilter === "Low Stock" ? "low" : stockFilter === "Out of Stock" ? "out" : "";
 
   const fetchProducts = useCallback(async () => {
-    setLoading(true);
     try {
       const params = new URLSearchParams();
       if (categoryFilter !== "All") params.set("category", categoryFilter);
@@ -144,6 +138,7 @@ const AdminProducts = () => {
         stock: "",
       });
       setImages(null);
+      setLoading(true);
       fetchProducts();
     } catch (err) {
       showToast(
@@ -178,6 +173,7 @@ const AdminProducts = () => {
       showToast("Product updated successfully!");
       setShowEdit(false);
       setEditingId(null);
+      setLoading(true);
       fetchProducts();
     } catch (err) {
       showToast(
@@ -195,6 +191,7 @@ const AdminProducts = () => {
     try {
       await API.delete(`/api/v1/product/admin/delete/${id}`);
       showToast("Product deleted successfully");
+      setLoading(true);
       fetchProducts();
     } catch (err) {
       showToast("Failed to delete product", err);
@@ -232,11 +229,17 @@ const AdminProducts = () => {
             type="text"
             placeholder="Search products by name, desc, or category..."
             value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
+            onChange={(e) => {
+              setSearchQuery(e.target.value);
+              setPage(1);
+            }}
           />
           {searchQuery && (
             <button
-              onClick={() => setSearchQuery("")}
+              onClick={() => {
+                setSearchQuery("");
+                setPage(1);
+              }}
               className="clear-search-btn"
             >
               <FiX />
@@ -249,7 +252,10 @@ const AdminProducts = () => {
             <FiTag className="filter-icon" />
             <select
               value={categoryFilter}
-              onChange={(e) => setCategoryFilter(e.target.value)}
+              onChange={(e) => {
+                setCategoryFilter(e.target.value);
+                setPage(1);
+              }}
             >
               <option value="All">
                 All Categories ({allCategories.reduce((s, c) => s + c.cnt, 0)})
@@ -266,7 +272,10 @@ const AdminProducts = () => {
             <FiPackage className="filter-icon" />
             <select
               value={stockFilter}
-              onChange={(e) => setStockFilter(e.target.value)}
+              onChange={(e) => {
+                setStockFilter(e.target.value);
+                setPage(1);
+              }}
             >
               <option value="All">All Stock Levels</option>
               <option value="In Stock">In Stock (&gt;5)</option>
@@ -768,7 +777,10 @@ const AdminProducts = () => {
                 <button 
                   className="btn btn-outline-ink btn-sm page-nav-btn"
                   disabled={!paginationInfo.hasPrevPage}
-                  onClick={() => setPage((prev) => Math.max(1, prev - 1))}
+                  onClick={() => {
+                    setPage((prev) => Math.max(1, prev - 1));
+                    setLoading(true);
+                  }}
                   style={{ display: "inline-flex", alignItems: "center", gap: "4px" }}
                 >
                   <FiChevronLeft size={16} /> Prev
@@ -776,7 +788,10 @@ const AdminProducts = () => {
                 <button 
                   className="btn btn-outline-ink btn-sm page-nav-btn"
                   disabled={!paginationInfo.hasNextPage}
-                  onClick={() => setPage((prev) => Math.min(paginationInfo.totalPages, prev + 1))}
+                  onClick={() => {
+                    setPage((prev) => Math.min(paginationInfo.totalPages, prev + 1));
+                    setLoading(true);
+                  }}
                   style={{ display: "inline-flex", alignItems: "center", gap: "4px" }}
                 >
                   Next <FiChevronRight size={16} />
