@@ -32,7 +32,7 @@ export const getAllUsers = async (page, limit) => {
   };
 };
 
-export const deleteUser = async (targetId, adminId) => {
+export const  deleteUser = async (targetId, adminId) => {
   if (targetId === adminId)
     throw new ErrorHandler("You cannot delete your own admin account", 400);
 

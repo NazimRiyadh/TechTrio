@@ -85,8 +85,12 @@ export const findItemsByOrderId = async (orderId) => {
 
 // ── Write ─────────────────────────────────────────────────────────────────────
 
-export const createOrder = async ({ buyerId, totalPrice, taxPrice, shippingPrice }) => {
-  const result = await db.query(
+export const createOrder = async (
+  { buyerId, totalPrice, taxPrice, shippingPrice },
+  client,
+) => {
+  const runner = client || db;
+  const result = await runner.query(
     `INSERT INTO orders (buyer_id, total_price, tax_price, shipping_price)
      VALUES ($1, $2, $3, $4) RETURNING *`,
     [buyerId, totalPrice, taxPrice, shippingPrice],
@@ -94,8 +98,9 @@ export const createOrder = async ({ buyerId, totalPrice, taxPrice, shippingPrice
   return result.rows[0];
 };
 
-export const createOrderItems = async (orderId, items) => {
+export const createOrderItems = async (orderId, items, client) => {
   // items: Array<{ productId, quantity, price, image, title }>
+  const runner = client || db;
   const values = [];
   const placeholders = [];
   items.forEach((item, index) => {
@@ -112,17 +117,18 @@ export const createOrderItems = async (orderId, items) => {
       `($${offset + 1}, $${offset + 2}, $${offset + 3}, $${offset + 4}, $${offset + 5}, $${offset + 6})`,
     );
   });
-  await db.query(
+  await runner.query(
     `INSERT INTO order_items (order_id, product_id, quantity, price, image, title)
      VALUES ${placeholders.join(", ")}`,
     values,
   );
 };
 
-export const createShippingInfo = async (orderId, shippingData) => {
+export const createShippingInfo = async (orderId, shippingData, client) => {
+  const runner = client || db;
   const { full_name, state, city, country, address, pincode, phone } =
     shippingData;
-  await db.query(
+  await runner.query(
     `INSERT INTO shipping_infos (order_id, full_name, state, city, country, address, pincode, phone)
      VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`,
     [orderId, full_name, state, city, country, address, pincode, phone],

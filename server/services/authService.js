@@ -15,23 +15,12 @@ import ErrorHandler from "../middlewares/errorMiddleware.js";
 
 const SALT_ROUNDS = 10;
 
-export const registerUser = async ({ name, email, password }, avatarFile) => {
+export const registerUser = async ({ name, email, password }) => {
   const existing = await userRepo.findByEmail(email);
   if (existing) throw new ErrorHandler("User already exists", 400);
 
-  let avatar = null;
-  if (avatarFile) {
-    const uploaded = await cloudinary.uploader.upload(avatarFile.tempFilePath, {
-      folder: "bigbazar/profile/avatars",
-      width: 150,
-      height: 150,
-      crop: "fill",
-    });
-    avatar = { public_id: uploaded.public_id, url: uploaded.secure_url };
-  }
-
   const hashedPassword = await bcrypt.hash(password.toString(), SALT_ROUNDS);
-  const user = await userRepo.createUser({ name, email, hashedPassword, avatar });
+  const user = await userRepo.createUser({ name, email, hashedPassword });
   return user;
 };
 
@@ -70,10 +59,7 @@ export const resetPassword = async (token, password, confirmPassword) => {
   if (password !== confirmPassword)
     throw new ErrorHandler("Passwords do not match", 400);
 
-  const hashedToken = crypto
-    .createHash("sha256")
-    .update(token)
-    .digest("hex");
+  const hashedToken = crypto.createHash("sha256").update(token).digest("hex");
 
   const user = await userRepo.findByResetToken(hashedToken);
   if (!user) throw new ErrorHandler("Invalid or expired token", 400);
@@ -98,10 +84,7 @@ export const updatePassword = async (
   const valid = await bcrypt.compare(oldPassword.toString(), user.password);
   if (!valid) throw new ErrorHandler("Invalid current password", 400);
 
-  const hashedPassword = await bcrypt.hash(
-    newPassword.toString(),
-    SALT_ROUNDS,
-  );
+  const hashedPassword = await bcrypt.hash(newPassword.toString(), SALT_ROUNDS);
   await userRepo.updatePassword(userId, hashedPassword);
   return await userRepo.findById(userId);
 };
@@ -124,7 +107,11 @@ export const updateProfile = async (userId, { name, email }, avatarFile) => {
     }
 
     const avatar = { public_id: uploaded.public_id, url: uploaded.secure_url };
-    return await userRepo.updateProfileWithAvatar(userId, { name, email, avatar });
+    return await userRepo.updateProfileWithAvatar(userId, {
+      name,
+      email,
+      avatar,
+    });
   }
 
   return await userRepo.updateProfile(userId, { name, email });
