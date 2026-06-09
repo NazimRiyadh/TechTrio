@@ -242,7 +242,7 @@ const CheckoutPage = () => {
   if (items.length === 0 && !clientSecret) return null;
 
   return (
-    <main className="section">
+    <main className={`section${isMobile && step >= 2 && step < 4 ? " checkout-mobile-active" : ""}`}>
       <div className="container">
         {step === 4 ? (
           <div className="checkout-success-card">
@@ -506,30 +506,43 @@ const CheckoutPage = () => {
                               Qty: {item.quantity}
                             </span>
                           </div>
-                          <span className="body-emphasis">
+                          <span className="body-emphasis checkout-review-item-price">
                             ৳{(item.price * item.quantity).toLocaleString("en-BD")}
                           </span>
                         </div>
                       ))}
                     </div>
 
-                    <div className="checkout-actions" style={{ marginTop: 24 }}>
+                    {isMobile && (
+                      <div className="checkout-review-total flex-between">
+                        <span className="body-emphasis">Total</span>
+                        <span className="display-xs">
+                          ৳{Math.round(total).toLocaleString("en-BD")}
+                        </span>
+                      </div>
+                    )}
+
+                    <div className="checkout-actions">
                       <button
+                        type="button"
                         className="btn btn-outline-ink"
                         onClick={() => setStep(1)}
                       >
                         Back
                       </button>
                       <button
-                        className="btn btn-primary"
+                        type="button"
+                        className="btn btn-primary checkout-pay-btn"
                         onClick={handlePlaceOrder}
                         disabled={loading}
                       >
                         {loading ? (
                           <span className="payment-spinner-wrap">
                             <span className="payment-spinner" />
-                            Creating Order…
+                            {isMobile ? "Please wait…" : "Creating Order…"}
                           </span>
+                        ) : isMobile ? (
+                          "Proceed to Pay"
                         ) : (
                           "Continue to Payment"
                         )}
@@ -609,12 +622,12 @@ const CheckoutPage = () => {
 
               {/* ──── Right Column: Order Summary ──── */}
               <div
-                className={`cart-summary card checkout-summary-card${step === 3 ? " checkout-summary-compact" : ""}`}
+                className={`cart-summary card checkout-summary-card${isMobile && step >= 2 ? " checkout-summary-compact" : ""}`}
               >
                 <h2 className="display-xs checkout-summary-title">
                   Order Summary
                 </h2>
-                {step === 3 && isMobile && (
+                {isMobile && step >= 2 && (
                   <p className="checkout-summary-count caption-md text-graphite">
                     {items.length} item{items.length !== 1 ? "s" : ""}
                   </p>
