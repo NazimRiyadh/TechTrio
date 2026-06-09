@@ -50,7 +50,7 @@ const getStripe = async () => {
 /* ─────────────────────────────────────────────────
    Inner Payment Form (runs inside <Elements>)
    ───────────────────────────────────────────────── */
-const PaymentForm = ({ onSuccess, onBack, totalLabel }) => {
+const PaymentForm = ({ onSuccess, onBack, totalLabel, isMobile }) => {
   const stripe = useStripe();
   const elements = useElements();
   const { showToast } = useToast();
@@ -93,7 +93,7 @@ const PaymentForm = ({ onSuccess, onBack, totalLabel }) => {
         <PaymentElement
           onReady={() => setReady(true)}
           options={{
-            layout: "tabs",
+            layout: isMobile ? "accordion" : "tabs",
           }}
         />
       </div>
@@ -154,6 +154,9 @@ const CheckoutPage = () => {
   const [clientSecret, setClientSecret] = useState(null);
   const [serverTotal, setServerTotal] = useState(null);
   const [stripeInstance, setStripeInstance] = useState(null);
+  const [isMobile, setIsMobile] = useState(
+    () => window.matchMedia("(max-width: 767px)").matches,
+  );
 
   const [shippingInfo, setShippingInfo] = useState({
     full_name: "",
@@ -168,6 +171,13 @@ const CheckoutPage = () => {
   // Load Stripe on mount
   useEffect(() => {
     getStripe().then(setStripeInstance);
+  }, []);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 767px)");
+    const onChange = (e) => setIsMobile(e.matches);
+    mq.addEventListener("change", onChange);
+    return () => mq.removeEventListener("change", onChange);
   }, []);
 
   // Redirect if cart empty
@@ -313,9 +323,11 @@ const CheckoutPage = () => {
               })}
             </div>
 
-            <div className="cart-layout">
+            <div
+              className={`cart-layout${step >= 2 ? " cart-layout-summary-first" : ""}${step === 3 ? " cart-layout-payment" : ""}`}
+            >
               {/* ──── Left Column ──── */}
-              <div>
+              <div className="checkout-main">
                 {/* STEP 1: Shipping */}
                 {step === 1 && (
                   <div className="card checkout-card">
@@ -528,7 +540,7 @@ const CheckoutPage = () => {
 
                 {/* STEP 3: Payment via Stripe Elements */}
                 {step === 3 && clientSecret && stripeInstance && (
-                  <div className="card checkout-card">
+                  <div className="card checkout-card checkout-payment-card">
                     <h2 className="display-xs checkout-card-title">
                       <FiCreditCard size={20} />
                       Payment
@@ -573,6 +585,7 @@ const CheckoutPage = () => {
                         onSuccess={handlePaymentSuccess}
                         onBack={() => setStep(2)}
                         totalLabel={`৳${Math.round(displayTotal).toLocaleString("en-BD")}`}
+                        isMobile={isMobile}
                       />
                     </Elements>
                   </div>
@@ -595,10 +608,17 @@ const CheckoutPage = () => {
               </div>
 
               {/* ──── Right Column: Order Summary ──── */}
-              <div className="cart-summary card checkout-summary-card">
-                <h2 className="display-xs" style={{ marginBottom: 20 }}>
+              <div
+                className={`cart-summary card checkout-summary-card${step === 3 ? " checkout-summary-compact" : ""}`}
+              >
+                <h2 className="display-xs checkout-summary-title">
                   Order Summary
                 </h2>
+                {step === 3 && isMobile && (
+                  <p className="checkout-summary-count caption-md text-graphite">
+                    {items.length} item{items.length !== 1 ? "s" : ""}
+                  </p>
+                )}
 
                 <div className="checkout-summary-items">
                   {items.map((item) => (
