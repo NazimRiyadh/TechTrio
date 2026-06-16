@@ -1,0 +1,10 @@
+Test Case ID,API Endpoint,Method,Pre-condition,Test Data / Payload,Expected Status,Expected Result / DB Verification
+API_AUTH_01,/api/v1/auth/register,POST,None,"{""name"":""John"",""email"":""test@test.com"",""password"":""Pass123!""}",201,User created in DB. Password is hashed. JWT returned in cookie/response.
+API_AUTH_02,/api/v1/auth/register,POST,None,"{""name"":""John"",""email"":""invalidemail"",""password"":""123""}",400,Validation error for email format and weak password.
+API_AUTH_03,/api/v1/auth/login,POST,User exists,"{""email"":""test@test.com"",""password"":""Pass123!""}",200,Successful login. JWT token present.
+API_AUTH_04,/api/v1/auth/login,POST,User exists,"{""email"":""test@test.com"",""password"":""WrongPass""}",401,Unauthorized error message.
+API_ORD_01,/api/v1/order/new,POST,Valid JWT token in header,"{""shippingInfo"":{...}, ""orderItems"":[...], ""paymentInfo"":{""id"":""pi_123"",""status"":""succeeded""}, ""itemsPrice"":100, ""taxPrice"":10, ""shippingPrice"":5, ""totalPrice"":115}",201,Order saved in PostgreSQL. orderItems mapped correctly.
+API_ORD_02,/api/v1/order/new,POST,No JWT token,"Same as above",401,"Error: 'Please login to access this resource'."
+API_ORD_03,/api/v1/order/admin/update/:id,PUT,JWT Token (Admin),"{""status"": ""Delivered""}",200,Order status updated to Delivered. DB order record reflects change.
+API_ORD_04,/api/v1/order/admin/update/:id,PUT,JWT Token (User),"{""status"": ""Delivered""}",403,"Error: 'Role (user) is not allowed to access this resource'."
+API_RATE_01,/api/v1/auth/login,POST,None,"Send 10 requests within 1 minute",429,authLimiter blocks request. Error: 'Too many login attempts'. Redis cache validates limit.

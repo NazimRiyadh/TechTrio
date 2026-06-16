@@ -1,0 +1,15 @@
+Scenario ID,Module,Test Scenario Description,Testing Type,Priority
+TC_E2E_001,Auth,"Verify successful user registration with valid data and bcrypt password hashing",Functional,High
+TC_E2E_002,Auth,"Verify user login creates JWT session and sets HttpOnly cookie",Security,High
+TC_E2E_003,Auth,"Verify rate-limiting: 429 Too Many Requests returned after 10 failed logins within 1 minute (Redis)",Performance,High
+TC_E2E_004,Auth,"Verify Concurrent Sessions: Logging in from a second device invalidates the first session's JWT",Security,Medium
+TC_E2E_005,Products,"Verify semantic search (Pinecone) for 'laptop bag' successfully returns 'backpacks' via vector embeddings",AI/Search,High
+TC_E2E_006,Products,"Verify Redis Caching: /products API responds in <50ms on 2nd request (Cache HIT) vs >200ms on 1st request (Cache MISS)",Performance,Critical
+TC_E2E_007,Products,"Verify filtering products by dynamic facets (Category, Price range, Rating)",Functional,Medium
+TC_E2E_008,Cart,"Verify cart data persists accurately in Redis across page reloads and browser sessions",Integration,High
+TC_E2E_009,Checkout,"Verify Stripe webhook successfully updates order status to 'Processing' upon successful charge",Integration,Critical
+TC_E2E_010,Checkout,"Verify Boundary Condition: Checkout with amount $999,999.99 handles precision errors correctly",Boundary,Medium
+TC_E2E_011,Orders,"Verify Dead Letter Queue (DLQ) failover: If Order Confirmation Email fails to send, message is requeued in RabbitMQ",Backend/Queue,High
+TC_E2E_012,Orders,"Verify Database Consistency: Order Total exactly matches the sum of individual item prices + tax + shipping in PostgreSQL",DB Validation,Critical
+TC_E2E_013,Admin,"Verify RBAC: Non-Admin user gets 403 Forbidden when attempting to access /admin routes",Security,Critical
+TC_E2E_014,Admin,"Verify concurrent inventory update: Two users buying the last 1 item simultaneously does not result in negative inventory (Race Condition check)",Concurrency,Critical

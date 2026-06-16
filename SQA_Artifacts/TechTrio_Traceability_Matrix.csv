@@ -1,0 +1,9 @@
+Requirement ID,Requirement Description,Test Case ID,Testing Type,Status,Defect ID (If Failed)
+REQ-AUTH-01,User must be able to register with email and password,TC_E2E_001,Functional,Passed,
+REQ-AUTH-02,User login must generate a secure HttpOnly JWT token,TC_E2E_002,Security,Passed,
+REQ-AUTH-03,System must block users after 10 failed login attempts,TC_E2E_003,Performance,Passed,
+REQ-PROD-01,Vector search must return semantically relevant items,TC_E2E_005,AI/Search,Passed,
+REQ-PROD-02,Product catalog API must respond in under 50ms via Cache,TC_E2E_006,Performance,Failed,BUG-202
+REQ-CART-01,Cart data must persist across sessions,TC_E2E_008,Integration,Passed,
+REQ-PAY-01,Stripe webhook must securely update order status,TC_E2E_009,Integration,Passed,
+REQ-INV-01,Inventory must accurately decrement and prevent negative stock,TC_E2E_014,Concurrency,Failed,BUG-201
