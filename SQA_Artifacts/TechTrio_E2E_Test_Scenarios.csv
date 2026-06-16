@@ -13,3 +13,7 @@ TC_E2E_011,Orders,"Verify Dead Letter Queue (DLQ) failover: If Order Confirmatio
 TC_E2E_012,Orders,"Verify Database Consistency: Order Total exactly matches the sum of individual item prices + tax + shipping in PostgreSQL",DB Validation,Critical
 TC_E2E_013,Admin,"Verify RBAC: Non-Admin user gets 403 Forbidden when attempting to access /admin routes",Security,Critical
 TC_E2E_014,Admin,"Verify concurrent inventory update: Two users buying the last 1 item simultaneously does not result in negative inventory (Race Condition check)",Concurrency,Critical
+TC_E2E_015,UI/UX,"Verify Responsive UI Behavior: Checkout and Cart workflows render correctly on mobile viewports (390px width) without horizontal scrolling",Usability,High
+TC_E2E_016,Auth,"Verify Token Expiry: Attempting an API request 61 minutes after login (with a 1h TTL token) returns 401 Unauthorized and prompts re-login",Security,High
+TC_E2E_017,Checkout,"Verify Checkout Interruption: Dropping network connection precisely after Stripe token generation but before order submission does not charge the user",Edge Case,Critical
+TC_E2E_018,Integration,"Verify Nodemailer Email Automation: Successful order triggers formatted HTML email receipt delivered to the user's registered address",Integration,Medium
