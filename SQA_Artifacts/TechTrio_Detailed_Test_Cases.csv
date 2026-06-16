@@ -1,0 +1,45 @@
+Test Case ID,Module,Scenario,Pre-conditions,Test Steps,Expected Result,Testing Type
+TC_001,Auth,Register - Positive,None,1. Navigate to /register 2. Enter valid details 3. Submit,User created and redirected to home,Functional
+TC_002,Auth,Register - Negative (Existing Email),User exists,1. Enter existing email 2. Submit,Error message 'Email already in use',Negative
+TC_003,Auth,Register - Boundary (Weak Password),None,1. Enter password '123' 2. Submit,Validation error for password length,Boundary
+TC_004,Auth,Login - Positive,User registered,1. Enter valid email/pass 2. Submit,Login successful. JWT set in HttpOnly cookie,Security
+TC_005,Auth,Login - Negative (Wrong Password),User registered,1. Enter wrong pass 2. Submit,401 Error 'Invalid credentials',Negative
+TC_006,Auth,Login - Performance (Rate Limit),None,1. Send 15 login requests in 1 min,429 Error 'Too many attempts',Performance
+TC_007,Auth,Logout - Positive,Logged in,1. Click Logout,Cookie cleared. Redirect to login,Security
+TC_008,Auth,Concurrent Session,Logged in on Dev A,1. Login on Dev B 2. Refresh Dev A,Dev A session invalidates. Token revoked,Security
+TC_009,Products,Search - Positive (Pinecone),None,1. Search 'winter coat',Returns vector matches like 'heavy jacket',AI/Search
+TC_010,Products,Search - Negative (No match),None,1. Search 'asdasdasd',Displays 'No products found',Negative
+TC_011,Products,Filter by Category,None,1. Select 'Electronics',Only electronic products displayed,Functional
+TC_012,Products,Filter by Price - Boundary,None,1. Set price $10 to $100,Items strictly within range displayed,Boundary
+TC_013,Products,Pagination,10+ products exist,1. Click Page 2,Next set of products load via PostgreSQL limit/offset,Functional
+TC_014,Products,Redis Cache - Speed,None,1. Load /products twice,Second load < 50ms (Cache Hit),Performance
+TC_015,Products,View Details,None,1. Click a product,Details page loads with images and reviews,Functional
+TC_016,Cart,Add item - Logged in,Logged in,1. Click Add to Cart,Cart badge increments. Toast shows success,Functional
+TC_017,Cart,Add item - Logged out,Logged out,1. Click Add to Cart,Cart data saves in LocalStorage/Redis session,Functional
+TC_018,Cart,Update Quantity - Positive,Item in cart,1. Change qty to 2,Total price recalculates immediately,Integration
+TC_019,Cart,Update Quantity - Boundary (Max Stock),Stock=5,1. Set qty to 6,Error 'Cannot exceed available stock',Boundary
+TC_020,Cart,Update Quantity - Boundary (Zero),Item in cart,1. Set qty to 0,Item is removed from cart,Boundary
+TC_021,Cart,Remove Item,Item in cart,1. Click trash icon,Item disappears. Total recalculates,Functional
+TC_022,Cart,Data Persistence,Item in cart,1. Refresh page,Cart retains items via Redis,Integration
+TC_023,Checkout,Access Checkout - Unauthenticated,Item in cart,1. Click Checkout,Redirected to login. ReturnURL set,Security
+TC_024,Checkout,Access Checkout - Authenticated,Logged in,1. Click Checkout,Shipping details form renders,Functional
+TC_025,Checkout,Shipping Form - Validation,None,1. Leave address empty 2. Submit,HTML5 validation prevents submission,Negative
+TC_026,Checkout,Payment - Successful Stripe,Valid Card,1. Enter 4242... 2. Submit,Order created. Payment Intent 'Succeeded',Integration
+TC_027,Checkout,Payment - Failed Card,Declined Card,1. Enter failed test card 2. Submit,Payment fails. Order NOT created,Negative
+TC_028,Checkout,Payment - Boundary Amount,Cart=$99999.99,1. Submit payment,Stripe handles large float value accurately,Boundary
+TC_029,Checkout,Interruption - Network Drop,At payment page,1. Disconnect wifi 2. Submit,App gracefully handles timeout error,Edge Case
+TC_030,Checkout,Data Integrity - Order Total,None,1. Complete purchase,DB order total exactly matches Cart math,DB Validation
+TC_031,Checkout,Race Condition - Inventory,Stock=1,1. Two users checkout same item at same ms,User 2 gets 'Out of Stock' error. Stock doesn't go negative,Concurrency
+TC_032,Orders,View My Orders,Has orders,1. Go to /orders/me,List of past orders rendered,Functional
+TC_033,Orders,Order Details,Has orders,1. Click order ID,Shows shipping info and payment status,Functional
+TC_034,Orders,Email Automation (RabbitMQ),Order placed,1. Check dummy email inbox,HTML receipt received via Nodemailer,Integration
+TC_035,Orders,DLQ Backoff,Nodemailer down,1. Place order,RabbitMQ retries 3x then pushes to DLQ,Backend/Queue
+TC_036,Admin,Access Admin Panel - Admin Role,Admin JWT,1. Navigate to /admin,Dashboard renders,Security
+TC_037,Admin,Access Admin Panel - User Role,User JWT,1. Navigate to /admin,403 Forbidden. Redirect to home,Security
+TC_038,Admin,View All Orders,Admin JWT,1. Go to Admin Orders,All system orders load,Functional
+TC_039,Admin,Update Order Status,Order='Processing',1. Change to 'Shipped',DB updates. Status reflects globally,Integration
+TC_040,Admin,Delete Product,Product exists,1. Click Delete,Product removed. Related cart items invalidated,DB Validation
+TC_041,UI/UX,Responsive - Mobile Home (390px),Viewport 390px,1. Resize window,Hamburger menu appears. Grid changes to 1-col,Usability
+TC_042,UI/UX,Responsive - Tablet (768px),Viewport 768px,1. Resize window,Grid changes to 2-col. Search bar fits,Usability
+TC_043,Security,XSS Prevention,None,1. Enter <script>alert(1)</script> in search,Input sanitized. Script does not execute,Security
+TC_044,Security,SQLi Prevention,None,1. Enter ' OR 1=1 in login,Sequelize ORM escapes query. Login fails,Security
